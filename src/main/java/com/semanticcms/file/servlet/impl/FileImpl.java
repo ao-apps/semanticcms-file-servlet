@@ -80,7 +80,10 @@ final public class FileImpl {
 			// In accessible book, use attributes
 			isDirectory = resourceFile.isDirectory();
 			// When is a directory, must end in slash
-			if(!file.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)) {
+			if(
+				isDirectory
+				&& !file.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+			) {
 				throw new IllegalArgumentException(
 					"References to directories must end in slash ("
 					+ com.semanticcms.file.model.File.SEPARATOR_CHAR
