@@ -33,6 +33,7 @@ import com.aoindustries.util.StringUtility;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
+import com.semanticcms.core.servlet.PageIndex;
 import com.semanticcms.core.servlet.PageRefResolver;
 import com.semanticcms.core.servlet.ServletElementContext;
 import com.semanticcms.core.servlet.impl.LinkImpl;
@@ -132,7 +133,10 @@ final public class FileImpl {
 			final boolean isAllowed = isAllowed(servletContext, request);
 			final boolean isExporting = Headers.isExporting(request);
 
-			out.write("<a");
+			String refId = PageIndex.getRefIdInPage(servletContext, request, element.getPage(), element.getId());
+			out.write("<a id=\"");
+			encodeTextInXhtmlAttribute(refId, out);
+			out.append('"');
 			if(!hasBody) {
 				// TODO: Class like p:link, where providing empty class disables automatic class selection here
 				out.write(" class=\"");
