@@ -34,7 +34,6 @@ import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
 import com.semanticcms.core.servlet.PageIndex;
-import com.semanticcms.core.servlet.PageRefResolver;
 import com.semanticcms.core.servlet.ServletElementContext;
 import com.semanticcms.core.servlet.impl.LinkImpl;
 import java.io.File;
@@ -96,33 +95,27 @@ final public class FileImpl {
 		Writer out,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
-		// Resolve file now to catch problems earlier even in meta mode
-		PageRef file = PageRefResolver.getPageRef(
-			servletContext,
-			request,
-			element.getBook(),
-			element.getPath()
-		);
+		PageRef pageRef = element.getPageRef();
 		// Find the local file, assuming relative to CVSWORK directory
-		File resourceFile = file.getResourceFile(false, true);
+		File resourceFile = pageRef.getResourceFile(false, true);
 		// Check if is directory and filename matches required pattern for directory
 		boolean isDirectory;
 		if(resourceFile == null) {
 			// In other book and not available, assume directory when ends in path separator
-			isDirectory = file.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
+			isDirectory = pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
 		} else {
 			// In accessible book, use attributes
 			isDirectory = resourceFile.isDirectory();
 			// When is a directory, must end in slash
 			if(
 				isDirectory
-				&& !file.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+				&& !pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
 			) {
 				throw new IllegalArgumentException(
 					"References to directories must end in slash ("
 					+ com.semanticcms.file.model.File.SEPARATOR_CHAR
 					+ "): "
-					+ file
+					+ pageRef
 				);
 			}
 		}
@@ -160,15 +153,15 @@ final public class FileImpl {
 				) {
 					// Include last modified on file
 					urlPath = request.getContextPath()
-						+ file.getBookPrefix()
-						+ file.getPath()
+						+ pageRef.getBookPrefix()
+						+ pageRef.getPath()
 						+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
 						+ "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
 					;
 				} else {
 					urlPath = request.getContextPath()
-						+ file.getBookPrefix()
-						+ file.getPath()
+						+ pageRef.getBookPrefix()
+						+ pageRef.getPath()
 					;
 				}
 				encodeTextInXhtmlAttribute(
@@ -189,16 +182,16 @@ final public class FileImpl {
 			) {
 				out.write(" onclick=\"");
 				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(file.getBook().getName(), out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getBook().getName(), out);
 				encodeJavaScriptInXhtmlAttribute("\", \"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(file.getPath(), out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), out);
 				encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
 				out.write('"');
 			}
 			out.write('>');
 			if(!hasBody) {
 				if(resourceFile == null) {
-					LinkImpl.writeBrokenPathInXhtml(file, out);
+					LinkImpl.writeBrokenPathInXhtml(pageRef, out);
 				} else {
 					encodeTextInXhtml(resourceFile.getName(), out);
 					if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);

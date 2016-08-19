@@ -32,6 +32,7 @@ import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
 import com.semanticcms.core.servlet.PageContext;
+import com.semanticcms.core.servlet.PageRefResolver;
 import com.semanticcms.file.servlet.impl.FileImpl;
 import java.io.IOException;
 import java.io.Writer;
@@ -42,6 +43,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
 public class File extends Element<com.semanticcms.file.model.File> {
+
+	private final String path;
+
+	private String book;
 
 	public File(
 		ServletContext servletContext,
@@ -55,7 +60,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			response,
 			new com.semanticcms.file.model.File()
 		);
-		element.setPath(path);
+		this.path = path==null || path.isEmpty() ? null : path;
 	}
 
 	public File(
@@ -66,7 +71,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(servletContext, request, response, path);
-		element.setBook(book);
+		this.book = book==null || book.isEmpty() ? null : book;
 	}
 
 	/**
@@ -90,7 +95,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 */
 	public File(String book, String path) {
 		this(path);
-		element.setBook(book);
+		this.book = book==null || book.isEmpty() ? null : book;
 	}
 
 	@Override
@@ -100,7 +105,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	}
 
 	public File book(String book) {
-		element.setBook(book);
+		this.book = book==null || book.isEmpty() ? null : book;
 		return this;
 	}
 
@@ -112,6 +117,15 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	private BufferResult writeMe;
 	@Override
 	protected void doBody(CaptureLevel captureLevel, Body<? super com.semanticcms.file.model.File> body) throws ServletException, IOException, SkipPageException {
+		// Resolve file now to catch problems earlier even in meta mode
+		element.setPageRef(
+			PageRefResolver.getPageRef(
+				servletContext,
+				request,
+				book,
+				path
+			)
+		);
 		super.doBody(captureLevel, body);
 		BufferWriter capturedOut;
 		if(captureLevel == CaptureLevel.BODY) {
