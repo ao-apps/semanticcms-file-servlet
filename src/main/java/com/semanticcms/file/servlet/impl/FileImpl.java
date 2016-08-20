@@ -34,6 +34,7 @@ import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
 import com.semanticcms.core.servlet.PageIndex;
+import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.core.servlet.ServletElementContext;
 import com.semanticcms.core.servlet.impl.LinkImpl;
 import java.io.File;
@@ -132,9 +133,13 @@ final public class FileImpl {
 			out.append('"');
 			if(!hasBody) {
 				// TODO: Class like p:link, where providing empty class disables automatic class selection here
-				out.write(" class=\"");
-				out.write(isDirectory ? "semanticcms-file-directory-link" : "semanticcms-file-file-link");
-				out.write('"');
+				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+				String linkCssClass = semanticCMS.getLinkCssClass(element);
+				if(linkCssClass != null) {
+					out.write(" class=\"");
+					encodeTextInXhtmlAttribute(linkCssClass, out);
+					out.write('"');
+				}
 			}
 			out.write(" href=\"");
 			if(
