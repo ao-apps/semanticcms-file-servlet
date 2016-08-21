@@ -39,13 +39,6 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 	<url>https://semanticcms.com/docs/semanticcms-file-servlet/</url>
 	<description>Files nested within SemanticCMS pages and elements in a Servlet environment.</description>
 
-	<licenses>
-		<license>
-			<name>GNU General Lesser Public License (LGPL) version 3.0</name>
-			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
-		</license>
-	</licenses>
-
 	<developers>
 		<developer>
 			<name>AO Industries, Inc.</name>
