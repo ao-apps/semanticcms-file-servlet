@@ -127,10 +127,16 @@ final public class FileImpl {
 			final boolean isAllowed = isAllowed(servletContext, request);
 			final boolean isExporting = Headers.isExporting(request);
 
-			String refId = PageIndex.getRefIdInPage(servletContext, request, element.getPage(), element.getId());
-			out.write("<a id=\"");
-			encodeTextInXhtmlAttribute(refId, out);
-			out.append('"');
+			String elemId = element.getId();
+			out.write("<a");
+			if(elemId != null) {
+				out.write(" id=\"");
+				encodeTextInXhtmlAttribute(
+					PageIndex.getRefIdInPage(servletContext, request, element.getPage(), elemId),
+					out
+				);
+				out.append('"');
+			}
 			if(!hasBody) {
 				// TODO: Class like p:link, where providing empty class disables automatic class selection here
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
