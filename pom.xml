@@ -32,7 +32,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 
 	<groupId>com.semanticcms</groupId>
 	<artifactId>semanticcms-file-servlet</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<packaging>jar</packaging>
 
 	<name>SemanticCMS File Servlet</name>
@@ -43,7 +43,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<connection>scm:git:git://github.com/aoindustries/semanticcms-file-servlet.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/semanticcms-file-servlet.git</developerConnection>
 		<url>http://github.com/aoindustries/semanticcms-file-servlet</url>
-		<tag>HEAD</tag>
+		<tag>semanticcms-file-servlet-1.2</tag>
 	</scm>
 
 	<dependencies>
