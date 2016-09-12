@@ -38,6 +38,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 	<name>SemanticCMS File Servlet</name>
 	<url>https://semanticcms.com/file/servlet/</url>
 	<description>Files nested within SemanticCMS pages and elements in a Servlet environment.</description>
+	<inceptionYear>2013</inceptionYear>
 
 	<scm>
 		<connection>scm:git:git://github.com/aoindustries/semanticcms-file-servlet.git</connection>
