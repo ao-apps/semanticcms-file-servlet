@@ -29,8 +29,7 @@ import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.CapturePage;
 import com.semanticcms.file.model.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,56 +42,39 @@ final public class FileUtils {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		Page page,
-		boolean recursive
+		final boolean recursive
 	) throws ServletException, IOException {
-		return hasFileRecursive(
+		return CapturePage.traversePagesAnyOrder(
 			servletContext,
 			request,
 			response,
 			page,
-			recursive,
-			recursive ? new HashSet<PageRef>() : null
-		);
-	}
-
-	private static boolean hasFileRecursive(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		Page page,
-		boolean recursive,
-		Set<PageRef> seenPages
-	) throws ServletException, IOException {
-		for(Element e : page.getElements()) {
-			if((e instanceof File) && !((File)e).isHidden()) {
-				return true;
-			}
-		}
-		if(recursive) {
-			seenPages.add(page.getPageRef());
-			for(PageRef childRef : page.getChildPages()) {
-				if(
-					// Child not in missing book
-					childRef.getBook() != null
-					// Not already seen
-					&& !seenPages.contains(childRef)
-				) {
-					if(
-						hasFileRecursive(
-							servletContext,
-							request,
-							response,
-							CapturePage.capturePage(servletContext, request, response, childRef, CaptureLevel.META),
-							recursive,
-							seenPages
-						)
-					) {
-						return true;
+			CaptureLevel.META,
+			new CapturePage.PageHandler<Boolean>() {
+				@Override
+				public Boolean handlePage(Page page) throws ServletException, IOException {
+					for(Element e : page.getElements()) {
+						if((e instanceof File) && !((File)e).isHidden()) {
+							return true;
+						}
 					}
+					return null;
+				}
+			},
+			new CapturePage.TraversalEdges() {
+				@Override
+				public Collection<PageRef> getEdges(Page page) {
+					return recursive ? page.getChildPages() : null;
+				}
+			},
+			new CapturePage.EdgeFilter() {
+				@Override
+				public boolean applyEdge(PageRef childPage) {
+					// Child not in missing book
+					return childPage.getBook() != null;
 				}
 			}
-		}
-		return false;
+		) != null;
 	}
 
 	/**
