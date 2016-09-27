@@ -58,7 +58,8 @@ final public class FileImpl {
 		void doBody(boolean discard) throws E, IOException, SkipPageException;
 	}
 
-	private static final Object isAllowedLock = new Object();
+	private static class IsAllowedLock {}
+	private static final IsAllowedLock isAllowedLock = new IsAllowedLock();
 	private static boolean openFileNotFound;
 
 	/**
