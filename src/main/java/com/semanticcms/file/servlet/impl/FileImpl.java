@@ -165,15 +165,13 @@ final public class FileImpl {
 				) {
 					// Include last modified on file
 					urlPath = request.getContextPath()
-						+ pageRef.getBookPrefix()
-						+ pageRef.getPath()
+						+ pageRef.getServletPath()
 						+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
 						+ "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
 					;
 				} else {
 					urlPath = request.getContextPath()
-						+ pageRef.getBookPrefix()
-						+ pageRef.getPath()
+						+ pageRef.getServletPath()
 					;
 				}
 				encodeTextInXhtmlAttribute(
