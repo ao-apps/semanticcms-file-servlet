@@ -62,6 +62,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 									<link>https://www.aoindustries.com/docs/ao-encoding/</link>
 									<link>https://www.aoindustries.com/docs/ao-io-buffer/</link>
 									<link>https://www.aoindustries.com/docs/ao-servlet-filter/</link>
+									<link>https://www.aoindustries.com/docs/ao-taglib/</link>
 									<link>https://www.aoindustries.com/docs/aocode-public/</link>
 									<link>https://semanticcms.com/core/model/apidocs/</link>
 									<link>https://semanticcms.com/core/servlet/apidocs/</link>
