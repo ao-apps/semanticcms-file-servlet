@@ -37,54 +37,20 @@ import com.semanticcms.core.servlet.PageIndex;
 import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.core.servlet.ServletElementContext;
 import com.semanticcms.core.servlet.impl.LinkImpl;
+import com.semanticcms.file.servlet.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
 final public class FileImpl {
 
-	private static final Logger logger = Logger.getLogger(FileImpl.class.getName());
-
 	public static interface FileImplBody<E extends Throwable> {
 		void doBody(boolean discard) throws E, IOException, SkipPageException;
-	}
-
-	private static class IsAllowedLock {}
-	private static final IsAllowedLock isAllowedLock = new IsAllowedLock();
-	private static boolean openFileNotFound;
-
-	/**
-	 * Using reflection to avoid hard dependency on semanticcms-openfile-servlet.
-	 */
-	private static boolean isAllowed(ServletContext servletContext, ServletRequest request) throws ServletException {
-		synchronized(isAllowedLock) {
-			// If failed once, fail quickly the second time
-			if(openFileNotFound) return false;
-			try {
-				Class<?> openFileClass = Class.forName("com.semanticcms.openfile.servlet.OpenFile");
-				Method isAllowedMethod = openFileClass.getMethod("isAllowed", ServletContext.class, ServletRequest.class);
-				return (Boolean)isAllowedMethod.invoke(null, servletContext, request);
-			} catch(ClassNotFoundException e) {
-				logger.warning("Unable to open local files, if desktop integration is desired, add the semanticcms-openfile-servlet package.");
-				openFileNotFound = true;
-				return false;
-			} catch(NoSuchMethodException e) {
-				throw new ServletException(e);
-			} catch(IllegalAccessException e) {
-				throw new ServletException(e);
-			} catch(InvocationTargetException e) {
-				throw new ServletException(e);
-			}
-		}
 	}
 
 	/**
@@ -125,7 +91,7 @@ final public class FileImpl {
 			BufferResult body = element.getBody();
 			boolean hasBody = body.getLength() != 0;
 			// Determine if local file opening is allowed
-			final boolean isAllowed = isAllowed(servletContext, request);
+			final boolean isOpenFileAllowed = FileUtils.isOpenFileAllowed(servletContext, request);
 			final boolean isExporting = Headers.isExporting(request);
 
 			String elemId = element.getId();
@@ -150,7 +116,7 @@ final public class FileImpl {
 			}
 			out.write(" href=\"");
 			if(
-				isAllowed
+				isOpenFileAllowed
 				&& resourceFile != null
 				&& !isExporting
 			) {
@@ -186,7 +152,7 @@ final public class FileImpl {
 			}
 			out.write('"');
 			if(
-				isAllowed
+				isOpenFileAllowed
 				&& resourceFile != null
 				&& !isExporting
 			) {

@@ -28,14 +28,54 @@ import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.CapturePage;
 import com.semanticcms.file.model.File;
+import com.semanticcms.openfile.servlet.OpenFile;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 final public class FileUtils {
+
+	private static final Logger logger = Logger.getLogger(FileUtils.class.getName());
+
+	private static class IsOpenFileAllowedLock {}
+	private static final IsOpenFileAllowedLock isOpenFileAllowedLock = new IsOpenFileAllowedLock();
+	private static boolean openFileNotFound;
+
+	/**
+	 * Determines if local file opening is allowed.
+	 *
+	 * Uses reflection to avoid hard dependency on semanticcms-openfile-servlet.
+	 *
+	 * @see  OpenFile#isAllowed(javax.servlet.ServletContext, javax.servlet.ServletRequest)
+	 */
+	public static boolean isOpenFileAllowed(ServletContext servletContext, ServletRequest request) throws ServletException {
+		synchronized(isOpenFileAllowedLock) {
+			// If failed once, fail quickly the second time
+			if(openFileNotFound) return false;
+			try {
+				Class<?> openFileClass = Class.forName("com.semanticcms.openfile.servlet.OpenFile");
+				Method isAllowedMethod = openFileClass.getMethod("isAllowed", ServletContext.class, ServletRequest.class);
+				return (Boolean)isAllowedMethod.invoke(null, servletContext, request);
+			} catch(ClassNotFoundException e) {
+				logger.warning("Unable to open local files, if desktop integration is desired, add the semanticcms-openfile-servlet package.");
+				openFileNotFound = true;
+				return false;
+			} catch(NoSuchMethodException e) {
+				throw new ServletException(e);
+			} catch(IllegalAccessException e) {
+				throw new ServletException(e);
+			} catch(InvocationTargetException e) {
+				throw new ServletException(e);
+			}
+		}
+	}
 
 	public static boolean hasFile(
 		ServletContext servletContext,
