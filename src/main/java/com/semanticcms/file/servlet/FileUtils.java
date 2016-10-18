@@ -22,6 +22,7 @@
  */
 package com.semanticcms.file.servlet;
 
+import com.semanticcms.core.model.ChildRef;
 import com.semanticcms.core.model.Element;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
@@ -103,8 +104,8 @@ final public class FileUtils {
 			},
 			new CapturePage.TraversalEdges() {
 				@Override
-				public Collection<PageRef> getEdges(Page page) {
-					return recursive ? page.getChildPages() : null;
+				public Collection<ChildRef> getEdges(Page page) {
+					return recursive ? page.getChildRefs() : null;
 				}
 			},
 			new CapturePage.EdgeFilter() {
