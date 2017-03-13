@@ -113,7 +113,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<dependency>
 			<groupId>com.aoindustries</groupId>
 			<artifactId>ao-servlet-filter</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
@@ -133,18 +133,18 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<dependency>
 			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-core-servlet</artifactId>
-			<version>1.10.0</version>
+			<version>1.10.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-file-model</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.3-SNAPSHOT</version>
 		</dependency>
 		<!-- mvn dependency:analyze will report this as unused, it is actually used through reflection -->
 		<dependency>
 			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-openfile-servlet</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.3-SNAPSHOT</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
