@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -52,15 +52,43 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
+		com.semanticcms.file.model.File element,
 		String path
 	) {
 		super(
 			servletContext,
 			request,
 			response,
-			new com.semanticcms.file.model.File()
+			element
 		);
 		this.path = path==null || path.isEmpty() ? null : path;
+	}
+
+	public File(
+		ServletContext servletContext,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		String path
+	) {
+		this(
+			servletContext,
+			request,
+			response,
+			new com.semanticcms.file.model.File(),
+			path
+		);
+	}
+
+	public File(
+		ServletContext servletContext,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		com.semanticcms.file.model.File element,
+		String book,
+		String path
+	) {
+		this(servletContext, request, response, element, path);
+		this.book = book==null || book.isEmpty() ? null : book;
 	}
 
 	public File(
@@ -79,6 +107,24 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 *
 	 * @see  PageContext
 	 */
+	public File(
+		com.semanticcms.file.model.File element,
+		String path
+	) {
+		this(
+			PageContext.getServletContext(),
+			PageContext.getRequest(),
+			PageContext.getResponse(),
+			element,
+			path
+		);
+	}
+
+	/**
+	 * Creates a new file in the current page context.
+	 *
+	 * @see  PageContext
+	 */
 	public File(String path) {
 		this(
 			PageContext.getServletContext(),
@@ -86,6 +132,20 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			PageContext.getResponse(),
 			path
 		);
+	}
+
+	/**
+	 * Creates a new file in the current page context.
+	 *
+	 * @see  PageContext
+	 */
+	public File(
+		com.semanticcms.file.model.File element,
+		String book,
+		String path
+	) {
+		this(element, path);
+		this.book = book==null || book.isEmpty() ? null : book;
 	}
 
 	/**
