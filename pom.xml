@@ -145,7 +145,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<dependency>
 			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-openfile-servlet</artifactId>
-			<version>1.5.3</version>
+			<version>1.5.4-validation-SNAPSHOT</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
