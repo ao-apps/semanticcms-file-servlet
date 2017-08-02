@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,6 +28,7 @@ import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.CapturePage;
+import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.file.model.File;
 import com.semanticcms.openfile.servlet.OpenFile;
 import java.io.IOException;
@@ -85,6 +86,7 @@ final public class FileUtils {
 		Page page,
 		final boolean recursive
 	) throws ServletException, IOException {
+		final SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
 		return CapturePage.traversePagesAnyOrder(
 			servletContext,
 			request,
@@ -111,8 +113,8 @@ final public class FileUtils {
 			new CapturePage.EdgeFilter() {
 				@Override
 				public boolean applyEdge(PageRef childPage) {
-					// Child not in missing book
-					return childPage.getBook() != null;
+					// Child is in accessible book
+					return semanticCMS.getBook(childPage.getBookRef()).isAccessible();
 				}
 			}
 		) != null;

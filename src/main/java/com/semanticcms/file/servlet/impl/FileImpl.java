@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,6 +30,7 @@ import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.UrlUtils;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
+import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
@@ -64,8 +65,13 @@ final public class FileImpl {
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		PageRef pageRef = element.getPageRef();
+		BookRef bookRef = pageRef.getBookRef();
 		// Find the local file, assuming relative to CVSWORK directory
-		File resourceFile = pageRef.getResourceFile(false, true);
+		File resourceFile =
+			SemanticCMS.getInstance(servletContext)
+			.getBook(bookRef)
+			.getSourceFile(pageRef.getPath(), false, true)
+		;
 		// Check if is directory and filename matches required pattern for directory
 		boolean isDirectory;
 		if(resourceFile == null) {
@@ -105,7 +111,7 @@ final public class FileImpl {
 				out.append('"');
 			}
 			if(!hasBody) {
-				// TODO: Class like p:link, where providing empty class disables automatic class selection here
+				// TODO: Class like core:link, where providing empty class disables automatic class selection here
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
 				String linkCssClass = semanticCMS.getLinkCssClass(element);
 				if(linkCssClass != null) {
@@ -158,7 +164,9 @@ final public class FileImpl {
 			) {
 				out.write(" onclick=\"");
 				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getBook().getName(), out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain(), out);
+				encodeJavaScriptInXhtmlAttribute("\", \"", out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getName(), out);
 				encodeJavaScriptInXhtmlAttribute("\", \"", out);
 				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), out);
 				encodeJavaScriptInXhtmlAttribute("\"); return false;", out);

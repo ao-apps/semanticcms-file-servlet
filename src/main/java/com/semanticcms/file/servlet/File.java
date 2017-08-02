@@ -28,6 +28,7 @@ import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
 import com.aoindustries.servlet.filter.TempFileContext;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
+import com.aoindustries.util.StringUtility;
 import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
@@ -46,6 +47,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 
 	private final String path;
 
+	private String domain;
 	private String book;
 
 	public File(
@@ -61,7 +63,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			response,
 			element
 		);
-		this.path = path==null || path.isEmpty() ? null : path;
+		this.path = StringUtility.nullIfEmpty(path);
 	}
 
 	public File(
@@ -88,7 +90,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(servletContext, request, response, element, path);
-		this.book = book==null || book.isEmpty() ? null : book;
+		this.book = StringUtility.nullIfEmpty(book);
 	}
 
 	public File(
@@ -99,7 +101,32 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(servletContext, request, response, path);
-		this.book = book==null || book.isEmpty() ? null : book;
+		this.book = StringUtility.nullIfEmpty(book);
+	}
+
+	public File(
+		ServletContext servletContext,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		com.semanticcms.file.model.File element,
+		String domain,
+		String book,
+		String path
+	) {
+		this(servletContext, request, response, element, book, path);
+		this.domain = StringUtility.nullIfEmpty(domain);
+	}
+
+	public File(
+		ServletContext servletContext,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		String domain,
+		String book,
+		String path
+	) {
+		this(servletContext, request, response, book, path);
+		this.domain = StringUtility.nullIfEmpty(domain);
 	}
 
 	/**
@@ -145,7 +172,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(element, path);
-		this.book = book==null || book.isEmpty() ? null : book;
+		this.book = StringUtility.nullIfEmpty(book);
 	}
 
 	/**
@@ -155,7 +182,32 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 */
 	public File(String book, String path) {
 		this(path);
-		this.book = book==null || book.isEmpty() ? null : book;
+		this.book = StringUtility.nullIfEmpty(book);
+	}
+
+	/**
+	 * Creates a new file in the current page context.
+	 *
+	 * @see  PageContext
+	 */
+	public File(
+		com.semanticcms.file.model.File element,
+		String domain,
+		String book,
+		String path
+	) {
+		this(element, book, path);
+		this.domain = StringUtility.nullIfEmpty(domain);
+	}
+
+	/**
+	 * Creates a new file in the current page context.
+	 *
+	 * @see  PageContext
+	 */
+	public File(String domain, String book, String path) {
+		this(book, path);
+		this.domain = StringUtility.nullIfEmpty(domain);
 	}
 
 	@Override
@@ -164,8 +216,13 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		return this;
 	}
 
+	public File domain(String domain) {
+		this.domain = StringUtility.nullIfEmpty(domain);
+		return this;
+	}
+
 	public File book(String book) {
-		this.book = book==null || book.isEmpty() ? null : book;
+		this.book = StringUtility.nullIfEmpty(book);
 		return this;
 	}
 
@@ -182,6 +239,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			PageRefResolver.getPageRef(
 				servletContext,
 				request,
+				domain,
 				book,
 				path
 			)
