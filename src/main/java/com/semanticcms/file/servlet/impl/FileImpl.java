@@ -136,14 +136,18 @@ final public class FileImpl {
 					&& !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
 				) {
 					// Include last modified on file
-					urlPath = request.getContextPath()
-						+ pageRef.getServletPath()
+					urlPath =
+						request.getContextPath()
+						+ bookRef.getPrefix()
+						+ pageRef.getPath()
 						+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
 						+ "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
 					;
 				} else {
-					urlPath = request.getContextPath()
-						+ pageRef.getServletPath()
+					urlPath =
+						request.getContextPath()
+						+ bookRef.getPrefix()
+						+ pageRef.getPath()
 					;
 				}
 				encodeTextInXhtmlAttribute(
