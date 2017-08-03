@@ -30,10 +30,12 @@ import com.aoindustries.servlet.filter.TempFileContext;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.util.StringUtility;
 import com.semanticcms.core.model.ElementContext;
+import com.semanticcms.core.model.ResourceRef;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
 import com.semanticcms.core.servlet.PageContext;
-import com.semanticcms.core.servlet.PageRefResolver;
+import com.semanticcms.core.servlet.ResourceRefResolver;
+import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.file.servlet.impl.FileImpl;
 import java.io.IOException;
 import java.io.Writer;
@@ -235,14 +237,16 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	@Override
 	protected void doBody(CaptureLevel captureLevel, Body<? super com.semanticcms.file.model.File> body) throws ServletException, IOException, SkipPageException {
 		// Resolve file now to catch problems earlier even in meta mode
-		element.setPageRef(
-			PageRefResolver.getPageRef(
-				servletContext,
-				request,
-				domain,
-				book,
-				path
-			)
+		ResourceRef resourceRef = ResourceRefResolver.getResourceRef(
+			servletContext,
+			request,
+			domain,
+			book,
+			path
+		);
+		element.setResource(
+			SemanticCMS.getInstance(servletContext).getBook(resourceRef.getBookRef()).getResourceStore(),
+			resourceRef
 		);
 		super.doBody(captureLevel, body);
 		BufferWriter capturedOut;

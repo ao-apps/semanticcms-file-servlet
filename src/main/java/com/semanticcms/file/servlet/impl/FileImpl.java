@@ -30,16 +30,19 @@ import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.UrlUtils;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
+import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.NodeBodyWriter;
-import com.semanticcms.core.model.PageRef;
+import com.semanticcms.core.model.Resource;
+import com.semanticcms.core.model.ResourceRef;
+import com.semanticcms.core.model.ResourceStore;
 import com.semanticcms.core.servlet.Headers;
 import com.semanticcms.core.servlet.PageIndex;
 import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.core.servlet.ServletElementContext;
-import com.semanticcms.core.servlet.impl.LinkImpl;
 import com.semanticcms.file.servlet.FileUtils;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import javax.servlet.ServletContext;
@@ -64,32 +67,49 @@ final public class FileImpl {
 		Writer out,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
-		PageRef pageRef = element.getPageRef();
-		BookRef bookRef = pageRef.getBookRef();
-		// Find the local file, assuming relative to CVSWORK directory
-		File resourceFile =
-			SemanticCMS.getInstance(servletContext)
-			.getBook(bookRef)
-			.getSourceFile(pageRef.getPath(), false, true)
-		;
+		ResourceStore resourceStore;
+		ResourceRef resourceRef;
+		{
+			Tuple2<ResourceStore, ResourceRef> resource = element.getResource();
+			if(resource == null) throw new IllegalArgumentException("Resource not set on file: " + element);
+			resourceStore = resource.getElement1();
+			resourceRef = resource.getElement2();
+		}
+		BookRef bookRef = resourceRef.getBookRef();
+		// Find the resource, if available
+		Resource resource = resourceStore == null ? null : resourceStore.getResource(resourceRef);
+		// Find the local file, if available
+		File resourceFile;
+		{
+			if(resource == null || !resource.exists()) {
+				resourceFile = null;
+			} else {
+				try {
+					resourceFile = resource.getFile();
+				} catch(FileNotFoundException e) {
+					// Resource removed between exists() and getFile()
+					resourceFile = null;
+				}
+			}
+		}
 		// Check if is directory and filename matches required pattern for directory
 		boolean isDirectory;
 		if(resourceFile == null) {
 			// In other book and not available, assume directory when ends in path separator
-			isDirectory = pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
+			isDirectory = resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
 		} else {
 			// In accessible book, use attributes
 			isDirectory = resourceFile.isDirectory();
 			// When is a directory, must end in slash
 			if(
 				isDirectory
-				&& !pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+				&& !resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
 			) {
 				throw new IllegalArgumentException(
 					"References to directories must end in slash ("
 					+ com.semanticcms.file.model.File.SEPARATOR_CHAR
 					+ "): "
-					+ pageRef
+					+ resourceRef
 				);
 			}
 		}
@@ -130,24 +150,25 @@ final public class FileImpl {
 			} else {
 				final String urlPath;
 				if(
-					resourceFile != null
+					resource != null
 					&& !isDirectory
 					// Check for header disabling auto last modified
 					&& !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
+					&& resource.exists()
 				) {
 					// Include last modified on file
 					urlPath =
 						request.getContextPath()
 						+ bookRef.getPrefix()
-						+ pageRef.getPath()
+						+ resourceRef.getPath()
 						+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
-						+ "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
+						+ "=" + LastModifiedServlet.encodeLastModified(resource.getLastModified())
 					;
 				} else {
 					urlPath =
 						request.getContextPath()
 						+ bookRef.getPrefix()
-						+ pageRef.getPath()
+						+ resourceRef.getPath()
 					;
 				}
 				encodeTextInXhtmlAttribute(
@@ -172,14 +193,23 @@ final public class FileImpl {
 				encodeJavaScriptInXhtmlAttribute("\", \"", out);
 				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getName(), out);
 				encodeJavaScriptInXhtmlAttribute("\", \"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath(), out);
 				encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
 				out.write('"');
 			}
 			out.write('>');
 			if(!hasBody) {
 				if(resourceFile == null) {
-					LinkImpl.writeBrokenPathInXhtml(pageRef, out);
+					String path = resourceRef.getPath();
+					int slashBefore;
+					if(path.endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)) {
+						slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING, path.length() - 2);
+					} else {
+						slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING);
+					}
+					String filename = path.substring(slashBefore + 1);
+					if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
+					encodeTextInXhtml(filename, out);
 				} else {
 					encodeTextInXhtml(resourceFile.getName(), out);
 					if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);
@@ -188,9 +218,14 @@ final public class FileImpl {
 				body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));
 			}
 			out.write("</a>");
-			if(!hasBody && resourceFile != null && !isDirectory) {
+			if(
+				!hasBody
+				&& resource != null
+				&& !isDirectory
+				&& resource.exists()
+			) {
 				out.write(" (");
-				encodeTextInXhtml(StringUtility.getApproximateSize(resourceFile.length()), out);
+				encodeTextInXhtml(StringUtility.getApproximateSize(resource.getLength()), out);
 				out.write(')');
 			}
 		}
