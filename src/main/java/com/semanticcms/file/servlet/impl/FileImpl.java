@@ -34,6 +34,7 @@ import com.aoindustries.util.Tuple2;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.Resource;
+import com.semanticcms.core.model.ResourceConnection;
 import com.semanticcms.core.model.ResourceRef;
 import com.semanticcms.core.model.ResourceStore;
 import com.semanticcms.core.servlet.Headers;
@@ -77,157 +78,169 @@ final public class FileImpl {
 		}
 		BookRef bookRef = resourceRef.getBookRef();
 		// Find the resource, if available
-		Resource resource = resourceStore == null ? null : resourceStore.getResource(resourceRef);
-		// Find the local file, if available
-		File resourceFile;
-		{
-			if(resource == null || !resource.exists()) {
-				resourceFile = null;
-			} else {
-				try {
-					resourceFile = resource.getFile();
-				} catch(FileNotFoundException e) {
-					// Resource removed between exists() and getFile()
+		Resource resource = resourceStore == null ? null : resourceStore.getResource(resourceRef.getPath());
+		// Connect to resource
+		ResourceConnection conn = resource == null ? null : resource.open();
+		try {
+			// Find the local file, if available
+			File resourceFile;
+			{
+				if(conn == null || !conn.exists()) {
 					resourceFile = null;
+				} else {
+					assert resource != null;
+					try {
+						resourceFile = resource.getFile();
+					} catch(FileNotFoundException e) {
+						// Resource removed between exists() and getFile()
+						resourceFile = null;
+					}
 				}
 			}
-		}
-		// Check if is directory and filename matches required pattern for directory
-		boolean isDirectory;
-		if(resourceFile == null) {
-			// In other book and not available, assume directory when ends in path separator
-			isDirectory = resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
-		} else {
-			// In accessible book, use attributes
-			isDirectory = resourceFile.isDirectory();
-			// When is a directory, must end in slash
-			if(
-				isDirectory
-				&& !resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
-			) {
-				throw new IllegalArgumentException(
-					"References to directories must end in slash ("
-					+ com.semanticcms.file.model.File.SEPARATOR_CHAR
-					+ "): "
-					+ resourceRef
-				);
+			// Check if is directory and filename matches required pattern for directory
+			boolean isDirectory;
+			if(resourceFile == null) {
+				// In other book and not available, assume directory when ends in path separator
+				isDirectory = resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
+			} else {
+				// In accessible book, use attributes
+				isDirectory = resourceFile.isDirectory();
+				// When is a directory, must end in slash
+				if(
+					isDirectory
+					&& !resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+				) {
+					throw new IllegalArgumentException(
+						"References to directories must end in slash ("
+						+ com.semanticcms.file.model.File.SEPARATOR_CHAR
+						+ "): "
+						+ resourceRef
+					);
+				}
 			}
-		}
-		if(out != null) {
-			BufferResult body = element.getBody();
-			boolean hasBody = body.getLength() != 0;
-			// Determine if local file opening is allowed
-			final boolean isOpenFileAllowed = FileUtils.isOpenFileAllowed(servletContext, request);
-			final boolean isExporting = Headers.isExporting(request);
+			if(out != null) {
+				BufferResult body = element.getBody();
+				boolean hasBody = body.getLength() != 0;
+				// Determine if local file opening is allowed
+				final boolean isOpenFileAllowed = FileUtils.isOpenFileAllowed(servletContext, request);
+				final boolean isExporting = Headers.isExporting(request);
 
-			String elemId = element.getId();
-			out.write("<a");
-			if(elemId != null) {
-				out.write(" id=\"");
-				encodeTextInXhtmlAttribute(
-					PageIndex.getRefIdInPage(servletContext, request, element.getPage(), elemId),
-					out
-				);
-				out.append('"');
-			}
-			if(!hasBody) {
-				// TODO: Class like core:link, where providing empty class disables automatic class selection here
-				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
-				String linkCssClass = semanticCMS.getLinkCssClass(element);
-				if(linkCssClass != null) {
-					out.write(" class=\"");
-					encodeTextInXhtmlAttribute(linkCssClass, out);
+				String elemId = element.getId();
+				out.write("<a");
+				if(elemId != null) {
+					out.write(" id=\"");
+					encodeTextInXhtmlAttribute(
+						PageIndex.getRefIdInPage(servletContext, request, element.getPage(), elemId),
+						out
+					);
+					out.append('"');
+				}
+				if(!hasBody) {
+					// TODO: Class like core:link, where providing empty class disables automatic class selection here
+					SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+					String linkCssClass = semanticCMS.getLinkCssClass(element);
+					if(linkCssClass != null) {
+						out.write(" class=\"");
+						encodeTextInXhtmlAttribute(linkCssClass, out);
+						out.write('"');
+					}
+				}
+				out.write(" href=\"");
+				if(
+					isOpenFileAllowed
+					&& resourceFile != null
+					&& !isExporting
+				) {
+					encodeTextInXhtmlAttribute(resourceFile.toURI().toString(), out);
+				} else {
+					final String urlPath;
+					long lastModified;
+					if(
+						conn != null
+						&& !isDirectory
+						// Check for header disabling auto last modified
+						&& !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
+						&& conn.exists()
+						&& (lastModified = conn.getLastModified()) != 0
+					) {
+						// Include last modified on file
+						urlPath =
+							request.getContextPath()
+							+ bookRef.getPrefix()
+							+ resourceRef.getPath()
+							+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
+							+ "=" + LastModifiedServlet.encodeLastModified(lastModified)
+						;
+					} else {
+						urlPath =
+							request.getContextPath()
+							+ bookRef.getPrefix()
+							+ resourceRef.getPath()
+						;
+					}
+					encodeTextInXhtmlAttribute(
+						response.encodeURL(
+							UrlUtils.encodeUrlPath(
+								urlPath,
+								response.getCharacterEncoding()
+							)
+						),
+						out
+					);
+				}
+				out.write('"');
+				if(
+					isOpenFileAllowed
+					&& resourceFile != null
+					&& !isExporting
+				) {
+					out.write(" onclick=\"");
+					encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain(), out);
+					encodeJavaScriptInXhtmlAttribute("\", \"", out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getName(), out);
+					encodeJavaScriptInXhtmlAttribute("\", \"", out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath(), out);
+					encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
 					out.write('"');
 				}
-			}
-			out.write(" href=\"");
-			if(
-				isOpenFileAllowed
-				&& resourceFile != null
-				&& !isExporting
-			) {
-				encodeTextInXhtmlAttribute(resourceFile.toURI().toString(), out);
-			} else {
-				final String urlPath;
-				if(
-					resource != null
-					&& !isDirectory
-					// Check for header disabling auto last modified
-					&& !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
-					&& resource.exists()
-				) {
-					// Include last modified on file
-					urlPath =
-						request.getContextPath()
-						+ bookRef.getPrefix()
-						+ resourceRef.getPath()
-						+ "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
-						+ "=" + LastModifiedServlet.encodeLastModified(resource.getLastModified())
-					;
-				} else {
-					urlPath =
-						request.getContextPath()
-						+ bookRef.getPrefix()
-						+ resourceRef.getPath()
-					;
-				}
-				encodeTextInXhtmlAttribute(
-					response.encodeURL(
-						UrlUtils.encodeUrlPath(
-							urlPath,
-							response.getCharacterEncoding()
-						)
-					),
-					out
-				);
-			}
-			out.write('"');
-			if(
-				isOpenFileAllowed
-				&& resourceFile != null
-				&& !isExporting
-			) {
-				out.write(" onclick=\"");
-				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain(), out);
-				encodeJavaScriptInXhtmlAttribute("\", \"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getName(), out);
-				encodeJavaScriptInXhtmlAttribute("\", \"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath(), out);
-				encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
-				out.write('"');
-			}
-			out.write('>');
-			if(!hasBody) {
-				if(resourceFile == null) {
-					String path = resourceRef.getPath();
-					int slashBefore;
-					if(path.endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)) {
-						slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING, path.length() - 2);
+				out.write('>');
+				if(!hasBody) {
+					if(resourceFile == null) {
+						String path = resourceRef.getPath();
+						int slashBefore;
+						if(path.endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)) {
+							slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING, path.length() - 2);
+						} else {
+							slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING);
+						}
+						String filename = path.substring(slashBefore + 1);
+						if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
+						encodeTextInXhtml(filename, out);
 					} else {
-						slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING);
+						encodeTextInXhtml(resourceFile.getName(), out);
+						if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);
 					}
-					String filename = path.substring(slashBefore + 1);
-					if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
-					encodeTextInXhtml(filename, out);
 				} else {
-					encodeTextInXhtml(resourceFile.getName(), out);
-					if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);
+					body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));
 				}
-			} else {
-				body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));
+				out.write("</a>");
+				long length;
+				if(
+					!hasBody
+					&& conn != null
+					&& !isDirectory
+					&& conn.exists()
+					&& (length = conn.getLength()) != -1
+				) {
+					out.write(" (");
+					encodeTextInXhtml(StringUtility.getApproximateSize(length), out);
+					out.write(')');
+				}
 			}
-			out.write("</a>");
-			if(
-				!hasBody
-				&& resource != null
-				&& !isDirectory
-				&& resource.exists()
-			) {
-				out.write(" (");
-				encodeTextInXhtml(StringUtility.getApproximateSize(resource.getLength()), out);
-				out.write(')');
-			}
+		} finally {
+			// TODO: Close earlier?
+			if(conn != null) conn.close();
 		}
 	}
 
