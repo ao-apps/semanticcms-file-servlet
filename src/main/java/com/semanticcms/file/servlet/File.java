@@ -28,7 +28,7 @@ import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.util.StringUtility;
 import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.model.ResourceRef;
-import com.semanticcms.core.servlet.CaptureLevel;
+import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
 import com.semanticcms.core.servlet.PageContext;
 import com.semanticcms.core.servlet.ResourceRefResolver;
@@ -242,7 +242,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			path
 		);
 		element.setResource(
-			SemanticCMS.getInstance(servletContext).getBook(resourceRef.getBookRef()).getResourceStore(),
+			SemanticCMS.getInstance(servletContext).getBook(resourceRef.getBookRef()).getResources(),
 			resourceRef
 		);
 		super.doBody(captureLevel, body);

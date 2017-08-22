@@ -27,6 +27,7 @@ import com.aoindustries.encoding.NewEncodingUtils;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
 import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
 import com.aoindustries.io.buffer.BufferResult;
+import com.aoindustries.net.Path;
 import com.aoindustries.net.UrlUtils;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
@@ -101,18 +102,18 @@ final public class FileImpl {
 			boolean isDirectory;
 			if(resourceFile == null) {
 				// In other book and not available, assume directory when ends in path separator
-				isDirectory = resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
+				isDirectory = resourceRef.getPath().toString().endsWith(Path.SEPARATOR_STRING);
 			} else {
 				// In accessible book, use attributes
 				isDirectory = resourceFile.isDirectory();
 				// When is a directory, must end in slash
 				if(
 					isDirectory
-					&& !resourceRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+					&& !resourceRef.getPath().toString().endsWith(Path.SEPARATOR_STRING)
 				) {
 					throw new IllegalArgumentException(
 						"References to directories must end in slash ("
-						+ com.semanticcms.file.model.File.SEPARATOR_CHAR
+						+ Path.SEPARATOR_CHAR
 						+ "): "
 						+ resourceRef
 					);
@@ -198,28 +199,28 @@ final public class FileImpl {
 					encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
 					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain(), out);
 					encodeJavaScriptInXhtmlAttribute("\", \"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getName(), out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getPath().toString(), out);
 					encodeJavaScriptInXhtmlAttribute("\", \"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath(), out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(resourceRef.getPath().toString(), out);
 					encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
 					out.write('"');
 				}
 				out.write('>');
 				if(!hasBody) {
 					if(resourceFile == null) {
-						String path = resourceRef.getPath();
+						String path = resourceRef.getPath().toString();
 						int slashBefore;
-						if(path.endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)) {
-							slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING, path.length() - 2);
+						if(path.endsWith(Path.SEPARATOR_STRING)) {
+							slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING, path.length() - 2);
 						} else {
-							slashBefore = path.lastIndexOf(com.semanticcms.file.model.File.SEPARATOR_STRING);
+							slashBefore = path.lastIndexOf(Path.SEPARATOR_STRING);
 						}
 						String filename = path.substring(slashBefore + 1);
 						if(filename.isEmpty()) throw new IllegalArgumentException("Invalid filename for file: " + path);
 						encodeTextInXhtml(filename, out);
 					} else {
 						encodeTextInXhtml(resourceFile.getName(), out);
-						if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);
+						if(isDirectory) encodeTextInXhtml(Path.SEPARATOR_CHAR, out);
 					}
 				} else {
 					body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));

@@ -26,7 +26,7 @@ import com.semanticcms.core.model.ChildRef;
 import com.semanticcms.core.model.Element;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
-import com.semanticcms.core.servlet.CaptureLevel;
+import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.servlet.CapturePage;
 import com.semanticcms.core.servlet.SemanticCMS;
 import com.semanticcms.file.model.File;
