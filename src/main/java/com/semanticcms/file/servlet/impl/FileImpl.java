@@ -197,7 +197,7 @@ final public class FileImpl {
 				) {
 					out.write(" onclick=\"");
 					encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain(), out);
+					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getDomain().toString(), out);
 					encodeJavaScriptInXhtmlAttribute("\", \"", out);
 					NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(bookRef.getPath().toString(), out);
 					encodeJavaScriptInXhtmlAttribute("\", \"", out);

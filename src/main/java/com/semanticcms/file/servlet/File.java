@@ -24,6 +24,7 @@ package com.semanticcms.file.servlet;
 
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
+import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.util.StringUtility;
@@ -47,7 +48,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 
 	private final String path;
 
-	private String domain;
+	private DomainName domain;
 	private Path book;
 
 	public File(
@@ -109,24 +110,24 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		com.semanticcms.file.model.File element,
-		String domain,
+		DomainName domain,
 		Path book,
 		String path
 	) {
 		this(servletContext, request, response, element, book, path);
-		this.domain = StringUtility.nullIfEmpty(domain);
+		this.domain = domain;
 	}
 
 	public File(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		String domain,
+		DomainName domain,
 		Path book,
 		String path
 	) {
 		this(servletContext, request, response, book, path);
-		this.domain = StringUtility.nullIfEmpty(domain);
+		this.domain = domain;
 	}
 
 	/**
@@ -192,12 +193,12 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 */
 	public File(
 		com.semanticcms.file.model.File element,
-		String domain,
+		DomainName domain,
 		Path book,
 		String path
 	) {
 		this(element, book, path);
-		this.domain = StringUtility.nullIfEmpty(domain);
+		this.domain = domain;
 	}
 
 	/**
@@ -205,9 +206,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 *
 	 * @see  PageContext
 	 */
-	public File(String domain, Path book, String path) {
+	public File(DomainName domain, Path book, String path) {
 		this(book, path);
-		this.domain = StringUtility.nullIfEmpty(domain);
+		this.domain = domain;
 	}
 
 	@Override
@@ -216,8 +217,8 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		return this;
 	}
 
-	public File domain(String domain) {
-		this.domain = StringUtility.nullIfEmpty(domain);
+	public File domain(DomainName domain) {
+		this.domain = domain;
 		return this;
 	}
 
