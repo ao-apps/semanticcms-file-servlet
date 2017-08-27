@@ -28,14 +28,14 @@ import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.util.StringUtility;
+import com.semanticcms.core.controller.ResourceRefResolver;
+import com.semanticcms.core.controller.SemanticCMS;
 import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.model.ResourceRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.pages.local.PageContext;
 import com.semanticcms.core.servlet.Element;
-import com.semanticcms.core.servlet.ResourceRefResolver;
-import com.semanticcms.core.servlet.SemanticCMS;
-import com.semanticcms.file.servlet.impl.FileImpl;
+import com.semanticcms.file.renderer.html.FileHtmlRenderer;
 import java.io.IOException;
 import java.io.Writer;
 import javax.servlet.ServletContext;
@@ -255,7 +255,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			capturedOut = null;
 		}
 		try {
-			FileImpl.writeFileImpl(
+			FileHtmlRenderer.writeFileImpl(
 				servletContext,
 				request,
 				response,

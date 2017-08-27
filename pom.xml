@@ -70,18 +70,17 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 								<links>
 									<link>${javac.link.javaApi}</link>
 									<link>${javac.link.javaeeApi.6}</link>
-									<link>https://aoindustries.com/ao-encoding/apidocs/</link>
 									<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
 									<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 									<link>https://aoindustries.com/ao-taglib/apidocs/</link>
 									<link>https://aoindustries.com/aocode-public/apidocs/</link>
+									<link>https://semanticcms.com/core/controller/apidocs/</link>
 									<link>https://semanticcms.com/core/model/apidocs/</link>
-									<link>https://semanticcms.com/core/pages/local/apidocs/</link>
 									<link>https://semanticcms.com/core/pages/apidocs/</link>
-									<link>https://semanticcms.com/core/resources/apidocs/</link>
+									<link>https://semanticcms.com/core/pages/local/apidocs/</link>
 									<link>https://semanticcms.com/core/servlet/apidocs/</link>
 									<link>https://semanticcms.com/file/model/apidocs/</link>
-									<link>https://semanticcms.com/openfile/servlet/apidocs/</link>
+									<link>https://semanticcms.com/file/renderer/html/apidocs/</link>
 								</links>
 							</configuration>
 						</plugin>
@@ -106,11 +105,6 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId>
-			<artifactId>ao-encoding</artifactId>
-			<version>1.6.1-validation-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.aoindustries</groupId>
 			<artifactId>ao-io-buffer</artifactId>
 			<version>3.0.0-SNAPSHOT</version>
 		</dependency>
@@ -131,6 +125,11 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		</dependency>
 		<dependency>
 			<groupId>com.semanticcms</groupId>
+			<artifactId>semanticcms-core-controller</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-core-model</artifactId>
 			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
@@ -146,11 +145,6 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		</dependency>
 		<dependency>
 			<groupId>com.semanticcms</groupId>
-			<artifactId>semanticcms-core-resources</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.semanticcms</groupId>
 			<artifactId>semanticcms-core-servlet</artifactId>
 			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
@@ -159,12 +153,10 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 			<artifactId>semanticcms-file-model</artifactId>
 			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
-		<!-- mvn dependency:analyze will report this as unused, it is actually used through reflection -->
 		<dependency>
 			<groupId>com.semanticcms</groupId>
-			<artifactId>semanticcms-openfile-servlet</artifactId>
+			<artifactId>semanticcms-file-renderer-html</artifactId>
 			<version>2.0.0-SNAPSHOT</version>
-			<optional>true</optional>
 		</dependency>
 	</dependencies>
 </project>
