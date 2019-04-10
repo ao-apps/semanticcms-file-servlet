@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
-Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
+Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -40,7 +40,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<description.html><![CDATA[Files nested within <a target="_top" href="https://semanticcms.com/">SemanticCMS</a> pages and elements in a Servlet environment.]]></description.html>
 	</properties>
 
-	<name>SemanticCMS File Servlet</name>
+	<name>SemanticCMS 2 File Servlet</name>
 	<url>https://semanticcms.com/file/servlet/</url>
 	<description>Files nested within SemanticCMS pages and elements in a Servlet environment.</description>
 	<inceptionYear>2013</inceptionYear>
