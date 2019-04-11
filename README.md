@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [SemanticCMS](https://semanticcms.com/) / [File](https://semanticcms.com/file/) / [Servlet](https://semanticcms.com/file/servlet/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [SemanticCMS](https://github.com/aoindustries/semanticcms) / [File](https://github.com/aoindustries/semanticcms-file) / [Servlet](https://github.com/aoindustries/semanticcms-file-servlet)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-current-stable">
 		<img src="https://semanticcms.com/ao-badges/project-current-stable.svg" alt="project: current stable" />
@@ -24,7 +24,7 @@
 	</a>
 </p>
 
-Files nested within [SemanticCMS](https://semanticcms.com/) pages and elements in a Servlet environment.
+Files nested within [SemanticCMS](https://github.com/aoindustries/semanticcms) pages and elements in a Servlet environment.
 
 ## Project Links
 * [Project Home](https://semanticcms.com/file/servlet/)
