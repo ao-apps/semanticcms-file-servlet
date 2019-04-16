@@ -40,7 +40,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<description.html><![CDATA[Files nested within <a target="_top" href="https://semanticcms.com/">SemanticCMS</a> pages and elements in a Servlet environment.]]></description.html>
 	</properties>
 
-	<name>SemanticCMS 1 File Servlet</name>
+	<name>SemanticCMS File Servlet</name>
 	<url>https://semanticcms.com/file/servlet/</url>
 	<description>Files nested within SemanticCMS pages and elements in a Servlet environment.</description>
 	<inceptionYear>2013</inceptionYear>
