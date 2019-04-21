@@ -66,7 +66,6 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 								<link>${javac.link.javaeeApi.6}</link>
 								<link>https://aoindustries.com/ao-encoding/apidocs/</link>
 								<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
-								<link>https://aoindustries.com/ao-servlet-filter/apidocs/</link>
 								<link>https://aoindustries.com/ao-taglib/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
 								<link>https://semanticcms.com/core/model/apidocs/</link>
@@ -95,9 +94,6 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-io-buffer</artifactId><version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.aoindustries</groupId><artifactId>ao-servlet-filter</artifactId><version>1.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-taglib</artifactId><version>3.0.0</version>
