@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -27,6 +27,7 @@ import com.aoindustries.encoding.NewEncodingUtils;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
 import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
 import com.aoindustries.io.buffer.BufferResult;
+import com.aoindustries.net.Path;
 import com.aoindustries.net.UrlUtils;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
@@ -70,18 +71,18 @@ final public class FileImpl {
 		boolean isDirectory;
 		if(resourceFile == null) {
 			// In other book and not available, assume directory when ends in path separator
-			isDirectory = pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING);
+			isDirectory = pageRef.getPath().endsWith(Path.SEPARATOR_STRING);
 		} else {
 			// In accessible book, use attributes
 			isDirectory = resourceFile.isDirectory();
 			// When is a directory, must end in slash
 			if(
 				isDirectory
-				&& !pageRef.getPath().endsWith(com.semanticcms.file.model.File.SEPARATOR_STRING)
+				&& !pageRef.getPath().endsWith(Path.SEPARATOR_STRING)
 			) {
 				throw new IllegalArgumentException(
 					"References to directories must end in slash ("
-					+ com.semanticcms.file.model.File.SEPARATOR_CHAR
+					+ Path.SEPARATOR_CHAR
 					+ "): "
 					+ pageRef
 				);
@@ -105,7 +106,7 @@ final public class FileImpl {
 				out.append('"');
 			}
 			if(!hasBody) {
-				// TODO: Class like p:link, where providing empty class disables automatic class selection here
+				// TODO: Class like core:link, where providing empty class disables automatic class selection here
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
 				String linkCssClass = semanticCMS.getLinkCssClass(element);
 				if(linkCssClass != null) {
@@ -170,7 +171,7 @@ final public class FileImpl {
 					LinkImpl.writeBrokenPathInXhtml(pageRef, out);
 				} else {
 					encodeTextInXhtml(resourceFile.getName(), out);
-					if(isDirectory) encodeTextInXhtml(com.semanticcms.file.model.File.SEPARATOR_CHAR, out);
+					if(isDirectory) encodeTextInXhtml(Path.SEPARATOR_CHAR, out);
 				}
 			} else {
 				body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));

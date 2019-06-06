@@ -67,6 +67,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 								<link>${javac.link.javaeeApi.6}</link>
 								<!-- Direct -->
 								<link>https://aoindustries.com/ao-encoding/apidocs/</link>
+								<link>https://aoindustries.com/ao-net-types/apidocs/</link>
 								<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
 								<link>https://aoindustries.com/ao-taglib/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
@@ -107,6 +108,14 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 			</dependency>
 			<dependency>
 				<groupId>com.aoindustries</groupId><artifactId>ao-io-buffer</artifactId><version>3.0.1-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.1.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId><version>1.1.2-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -177,6 +186,9 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-io-buffer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.aoindustries</groupId><artifactId>ao-net-types</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.aoindustries</groupId><artifactId>ao-taglib</artifactId>
