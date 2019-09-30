@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,7 +28,7 @@ import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextIn
 import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
-import com.aoindustries.net.UrlUtils;
+import com.aoindustries.servlet.ServletUtil;
 import com.aoindustries.servlet.http.LastModifiedServlet;
 import com.aoindustries.util.StringUtility;
 import com.semanticcms.core.model.NodeBodyWriter;
@@ -100,7 +100,8 @@ final public class FileImpl {
 			if(elemId != null) {
 				out.write(" id=\"");
 				encodeTextInXhtmlAttribute(
-					PageIndex.getRefIdInPage(servletContext, request, element.getPage(), elemId),
+					// TODO: To appendIdInPage, review other uses, too
+					PageIndex.getRefIdInPage(request, element.getPage(), elemId),
 					out
 				);
 				out.append('"');
@@ -142,12 +143,7 @@ final public class FileImpl {
 					;
 				}
 				encodeTextInXhtmlAttribute(
-					response.encodeURL(
-						UrlUtils.encodeUrlPath(
-							urlPath,
-							response.getCharacterEncoding()
-						)
-					),
+					response.encodeURL(ServletUtil.encodeURI(urlPath, response)),
 					out
 				);
 			}
