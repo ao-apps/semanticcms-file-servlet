@@ -122,7 +122,10 @@ final public class FileImpl {
 				&& resourceFile != null
 				&& !isExporting
 			) {
-				encodeTextInXhtmlAttribute(resourceFile.toURI().toString(), out);
+				encodeTextInXhtmlAttribute(
+					response.encodeURL(resourceFile.toURI().toASCIIString()),
+					out
+				);
 			} else {
 				final String urlPath;
 				if(
