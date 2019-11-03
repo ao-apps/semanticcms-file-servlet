@@ -50,6 +50,7 @@ import javax.servlet.jsp.SkipPageException;
 
 final public class FileImpl {
 
+	@FunctionalInterface
 	public static interface FileImplBody<E extends Throwable> {
 		void doBody(boolean discard) throws E, IOException, SkipPageException;
 	}
