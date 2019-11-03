@@ -36,7 +36,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2016-10-30T23:43:30-0500"
-		dateModified="2019-10-11T23:52:38-0500"
+		dateModified="2019-11-02T16:41:06-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-file-servlet:pom.version}" />
@@ -56,6 +56,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 					<li>Added <core:link book="/core/model" page="/" /> domain support.</li>
 					<li>Added <core:link book="/core/pages" page="/" /> support.</li>
 					<li>Added <core:link book="/core/resources" page="/" /> support.</li>
+					<li>Minimum Java version changed from 1.7 to 1.8.</li>
 				</ul>
 			</changelog:release>
 		</c:if>
