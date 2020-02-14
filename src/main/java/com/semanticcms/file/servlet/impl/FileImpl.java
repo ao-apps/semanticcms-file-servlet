@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,7 +25,7 @@ package com.semanticcms.file.servlet.impl;
 import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.encodeJavaScriptInXhtmlAttribute;
 import com.aoindustries.encoding.NewEncodingUtils;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
-import static com.aoindustries.encoding.TextInXhtmlEncoder.encodeTextInXhtml;
+import com.aoindustries.html.Html;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
@@ -41,7 +41,6 @@ import com.semanticcms.core.servlet.impl.LinkImpl;
 import com.semanticcms.file.servlet.FileUtils;
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -56,13 +55,13 @@ final public class FileImpl {
 	}
 
 	/**
-	 * @param out Optional, when null meta data is verified but no output is generated
+	 * @param html Optional, when null meta data is verified but no output is generated
 	 */
 	public static void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		Writer out,
+		Html html,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		PageRef pageRef = element.getPageRef();
@@ -89,7 +88,7 @@ final public class FileImpl {
 				);
 			}
 		}
-		if(out != null) {
+		if(html != null) {
 			BufferResult body = element.getBody();
 			boolean hasBody = body.getLength() != 0;
 			// Determine if local file opening is allowed
@@ -97,27 +96,27 @@ final public class FileImpl {
 			final boolean isExporting = Headers.isExporting(request);
 
 			String elemId = element.getId();
-			out.write("<a");
+			html.out.write("<a");
 			if(elemId != null) {
-				out.write(" id=\"");
+				html.out.write(" id=\"");
 				encodeTextInXhtmlAttribute(
 					// TODO: To appendIdInPage, review other uses, too
 					PageIndex.getRefIdInPage(request, element.getPage(), elemId),
-					out
+					html.out
 				);
-				out.append('"');
+				html.out.append('"');
 			}
 			if(!hasBody) {
 				// TODO: Class like core:link, where providing empty class disables automatic class selection here
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
 				String linkCssClass = semanticCMS.getLinkCssClass(element);
 				if(linkCssClass != null) {
-					out.write(" class=\"");
-					encodeTextInXhtmlAttribute(linkCssClass, out);
-					out.write('"');
+					html.out.write(" class=\"");
+					encodeTextInXhtmlAttribute(linkCssClass, html.out);
+					html.out.write('"');
 				}
 			}
-			out.write(" href=\"");
+			html.out.write(" href=\"");
 			if(
 				isOpenFileAllowed
 				&& resourceFile != null
@@ -125,7 +124,7 @@ final public class FileImpl {
 			) {
 				encodeTextInXhtmlAttribute(
 					response.encodeURL(resourceFile.toURI().toASCIIString()),
-					out
+					html.out
 				);
 			} else {
 				final String urlPath;
@@ -148,39 +147,39 @@ final public class FileImpl {
 				}
 				encodeTextInXhtmlAttribute(
 					response.encodeURL(URIEncoder.encodeURI(urlPath)),
-					out
+					html.out
 				);
 			}
-			out.write('"');
+			html.out.write('"');
 			if(
 				isOpenFileAllowed
 				&& resourceFile != null
 				&& !isExporting
 			) {
-				out.write(" onclick=\"");
-				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getBook().getName(), out);
-				encodeJavaScriptInXhtmlAttribute("\", \"", out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), out);
-				encodeJavaScriptInXhtmlAttribute("\"); return false;", out);
-				out.write('"');
+				html.out.write(" onclick=\"");
+				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", html.out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getBook().getName(), html.out);
+				encodeJavaScriptInXhtmlAttribute("\", \"", html.out);
+				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), html.out);
+				encodeJavaScriptInXhtmlAttribute("\"); return false;", html.out);
+				html.out.write('"');
 			}
-			out.write('>');
+			html.out.write('>');
 			if(!hasBody) {
 				if(resourceFile == null) {
-					LinkImpl.writeBrokenPathInXhtml(pageRef, out);
+					LinkImpl.writeBrokenPathInXhtml(pageRef, html.out);
 				} else {
-					encodeTextInXhtml(resourceFile.getName(), out);
-					if(isDirectory) encodeTextInXhtml(Path.SEPARATOR_CHAR, out);
+					html.text(resourceFile.getName());
+					if(isDirectory) html.text(Path.SEPARATOR_CHAR);
 				}
 			} else {
-				body.writeTo(new NodeBodyWriter(element, out, new ServletElementContext(servletContext, request, response)));
+				body.writeTo(new NodeBodyWriter(element, html.out, new ServletElementContext(servletContext, request, response)));
 			}
-			out.write("</a>");
+			html.out.write("</a>");
 			if(!hasBody && resourceFile != null && !isDirectory) {
-				out.write(" (");
-				encodeTextInXhtml(StringUtility.getApproximateSize(resourceFile.length()), out);
-				out.write(')');
+				html.out.write(" (");
+				html.text(StringUtility.getApproximateSize(resourceFile.length()));
+				html.out.write(')');
 			}
 		}
 	}
