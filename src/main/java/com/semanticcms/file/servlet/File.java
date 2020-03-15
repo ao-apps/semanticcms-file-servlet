@@ -28,7 +28,7 @@ import com.aoindustries.io.buffer.BufferWriter;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.semanticcms.core.controller.ResourceRefResolver;
 import com.semanticcms.core.controller.SemanticCMS;
 import com.semanticcms.core.model.ElementContext;
@@ -65,7 +65,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			response,
 			element
 		);
-		this.path = StringUtility.nullIfEmpty(path);
+		this.path = Strings.nullIfEmpty(path);
 	}
 
 	public File(
