@@ -26,7 +26,7 @@ import com.aoindustries.html.servlet.HtmlEE;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
@@ -60,7 +60,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			response,
 			element
 		);
-		this.path = StringUtility.nullIfEmpty(path);
+		this.path = Strings.nullIfEmpty(path);
 	}
 
 	public File(
@@ -87,7 +87,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(servletContext, request, response, element, path);
-		this.book = StringUtility.nullIfEmpty(book);
+		this.book = Strings.nullIfEmpty(book);
 	}
 
 	public File(
@@ -98,7 +98,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(servletContext, request, response, path);
-		this.book = StringUtility.nullIfEmpty(book);
+		this.book = Strings.nullIfEmpty(book);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 		String path
 	) {
 		this(element, path);
-		this.book = StringUtility.nullIfEmpty(book);
+		this.book = Strings.nullIfEmpty(book);
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	 */
 	public File(String book, String path) {
 		this(path);
-		this.book = StringUtility.nullIfEmpty(book);
+		this.book = Strings.nullIfEmpty(book);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 	}
 
 	public File book(String book) {
-		this.book = StringUtility.nullIfEmpty(book);
+		this.book = Strings.nullIfEmpty(book);
 		return this;
 	}
 

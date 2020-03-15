@@ -30,7 +30,7 @@ import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
 import com.aoindustries.servlet.lastmodified.LastModifiedServlet;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
@@ -178,7 +178,7 @@ final public class FileImpl {
 			html.out.write("</a>");
 			if(!hasBody && resourceFile != null && !isDirectory) {
 				html.out.write(" (");
-				html.text(StringUtility.getApproximateSize(resourceFile.length()));
+				html.text(Strings.getApproximateSize(resourceFile.length()));
 				html.out.write(')');
 			}
 		}
