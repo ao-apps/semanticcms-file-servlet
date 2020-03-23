@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,6 @@
  */
 package com.semanticcms.file.servlet;
 
-import com.semanticcms.core.model.ChildRef;
 import com.semanticcms.core.model.Element;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
@@ -33,7 +32,6 @@ import com.semanticcms.openfile.servlet.OpenFile;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -87,30 +85,17 @@ final public class FileUtils {
 			response,
 			page,
 			CaptureLevel.META,
-			new CapturePage.PageHandler<Boolean>() {
-				@Override
-				public Boolean handlePage(Page page) throws ServletException, IOException {
-					for(Element e : page.getElements()) {
-						if((e instanceof File) && !((File)e).isHidden()) {
-							return true;
-						}
+			(Page p) -> {
+				for(Element e : p.getElements()) {
+					if((e instanceof File) && !((File)e).isHidden()) {
+						return true;
 					}
-					return null;
 				}
+				return null;
 			},
-			new CapturePage.TraversalEdges() {
-				@Override
-				public Collection<ChildRef> getEdges(Page page) {
-					return recursive ? page.getChildRefs() : null;
-				}
-			},
-			new CapturePage.EdgeFilter() {
-				@Override
-				public boolean applyEdge(PageRef childPage) {
-					// Child not in missing book
-					return childPage.getBook() != null;
-				}
-			}
+			(Page p) -> recursive ? p.getChildRefs() : null,
+			// Child not in missing book
+			(PageRef childPage) -> childPage.getBook() != null
 		) != null;
 	}
 
