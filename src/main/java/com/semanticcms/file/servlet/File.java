@@ -25,10 +25,10 @@ package com.semanticcms.file.servlet;
 import com.aoindustries.html.servlet.HtmlEE;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
-import com.aoindustries.lang.Strings;
 import com.semanticcms.core.controller.ResourceRefResolver;
 import com.semanticcms.core.controller.SemanticCMS;
 import com.semanticcms.core.model.ElementContext;
@@ -260,7 +260,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 				servletContext,
 				request,
 				response,
-				(capturedOut == null) ? null : HtmlEE.get(servletContext, request, capturedOut),
+				(capturedOut == null) ? null : HtmlEE.get(servletContext, request, response, capturedOut),
 				element
 			);
 		} finally {
