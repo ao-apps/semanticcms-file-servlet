@@ -25,8 +25,8 @@ package com.semanticcms.file.servlet;
 import com.aoindustries.html.servlet.HtmlEE;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
-import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.lang.Strings;
+import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.semanticcms.core.model.ElementContext;
 import com.semanticcms.core.servlet.CaptureLevel;
 import com.semanticcms.core.servlet.Element;
@@ -197,7 +197,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 				servletContext,
 				request,
 				response,
-				(capturedOut == null) ? null : HtmlEE.get(servletContext, request, capturedOut),
+				(capturedOut == null) ? null : HtmlEE.get(servletContext, request, response, capturedOut),
 				element
 			);
 		} finally {
