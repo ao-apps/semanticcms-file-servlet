@@ -22,15 +22,16 @@
  */
 package com.semanticcms.file.servlet.impl;
 
-import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.encodeJavaScriptInXhtmlAttribute;
-import com.aoindustries.encoding.NewEncodingUtils;
+import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.javaScriptInXhtmlAttributeEncoder;
+import com.aoindustries.encoding.MediaWriter;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
 import com.aoindustries.html.Html;
+import com.aoindustries.io.NoCloseWriter;
 import com.aoindustries.io.buffer.BufferResult;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.net.Path;
 import com.aoindustries.net.URIEncoder;
 import com.aoindustries.servlet.lastmodified.LastModifiedServlet;
-import com.aoindustries.lang.Strings;
 import com.semanticcms.core.model.NodeBodyWriter;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.Headers;
@@ -157,11 +158,9 @@ final public class FileImpl {
 				&& !isExporting
 			) {
 				html.out.write(" onclick=\"");
-				encodeJavaScriptInXhtmlAttribute("semanticcms_openfile_servlet.openFile(\"", html.out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getBook().getName(), html.out);
-				encodeJavaScriptInXhtmlAttribute("\", \"", html.out);
-				NewEncodingUtils.encodeTextInJavaScriptInXhtmlAttribute(pageRef.getPath(), html.out);
-				encodeJavaScriptInXhtmlAttribute("\"); return false;", html.out);
+				try (MediaWriter onclick = new MediaWriter(html.encodingContext, javaScriptInXhtmlAttributeEncoder, new NoCloseWriter(html.out))) {
+					onclick.append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;");
+				}
 				html.out.write('"');
 			}
 			html.out.write('>');
