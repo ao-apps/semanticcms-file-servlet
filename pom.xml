@@ -29,7 +29,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<groupId>com.semanticcms</groupId><artifactId>semanticcms-file-servlet</artifactId><version>1.8.0</version>
+	<groupId>com.semanticcms</groupId><artifactId>semanticcms-file-servlet</artifactId><version>1.8.0-POST-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<properties>
@@ -50,7 +50,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<connection>scm:git:git://github.com/aoindustries/semanticcms-file-servlet.git</connection>
 		<developerConnection>scm:git:git@github.com:aoindustries/semanticcms-file-servlet.git</developerConnection>
 		<url>https://github.com/aoindustries/semanticcms-file-servlet</url>
-		<tag>semanticcms-file-servlet-1.8.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
