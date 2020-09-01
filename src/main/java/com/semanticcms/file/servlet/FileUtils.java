@@ -66,7 +66,7 @@ final public class FileUtils {
 				logger.warning("Unable to open local files, if desktop integration is desired, add the semanticcms-openfile-servlet package.");
 				openFileNotFound = true;
 				return false;
-			} catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			} catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) { // TODO: ReflectiveOperationException
 				throw new ServletException(e);
 			}
 		}
