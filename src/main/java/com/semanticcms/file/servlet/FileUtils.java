@@ -30,7 +30,6 @@ import com.semanticcms.core.servlet.CapturePage;
 import com.semanticcms.file.model.File;
 import com.semanticcms.openfile.servlet.OpenFile;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -66,7 +65,7 @@ final public class FileUtils {
 				logger.warning("Unable to open local files, if desktop integration is desired, add the semanticcms-openfile-servlet package.");
 				openFileNotFound = true;
 				return false;
-			} catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) { // TODO: ReflectiveOperationException
+			} catch(ReflectiveOperationException e) {
 				throw new ServletException(e);
 			}
 		}
