@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,7 +25,7 @@ package com.semanticcms.file.servlet.impl;
 import static com.aoindustries.encoding.JavaScriptInXhtmlAttributeEncoder.javaScriptInXhtmlAttributeEncoder;
 import com.aoindustries.encoding.MediaWriter;
 import static com.aoindustries.encoding.TextInXhtmlAttributeEncoder.encodeTextInXhtmlAttribute;
-import com.aoindustries.html.Html;
+import com.aoindustries.html.Document;
 import com.aoindustries.io.NoCloseWriter;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.lang.Strings;
@@ -56,13 +56,13 @@ final public class FileImpl {
 	}
 
 	/**
-	 * @param html Optional, when null meta data is verified but no output is generated
+	 * @param document Optional, when null meta data is verified but no output is generated
 	 */
 	public static void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		Html html,
+		Document document,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		PageRef pageRef = element.getPageRef();
@@ -89,7 +89,7 @@ final public class FileImpl {
 				);
 			}
 		}
-		if(html != null) {
+		if(document != null) {
 			BufferResult body = element.getBody();
 			boolean hasBody = body.getLength() != 0;
 			// Determine if local file opening is allowed
@@ -97,27 +97,27 @@ final public class FileImpl {
 			final boolean isExporting = Headers.isExporting(request);
 
 			String elemId = element.getId();
-			html.out.write("<a");
+			document.out.write("<a");
 			if(elemId != null) {
-				html.out.write(" id=\"");
+				document.out.write(" id=\"");
 				encodeTextInXhtmlAttribute(
 					// TODO: To appendIdInPage, review other uses, too
 					PageIndex.getRefIdInPage(request, element.getPage(), elemId),
-					html.out
+					document.out
 				);
-				html.out.append('"');
+				document.out.append('"');
 			}
 			if(!hasBody) {
 				// TODO: Class like core:link, where providing empty class disables automatic class selection here
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
 				String linkCssClass = semanticCMS.getLinkCssClass(element);
 				if(linkCssClass != null) {
-					html.out.write(" class=\"");
-					encodeTextInXhtmlAttribute(linkCssClass, html.out);
-					html.out.write('"');
+					document.out.write(" class=\"");
+					encodeTextInXhtmlAttribute(linkCssClass, document.out);
+					document.out.write('"');
 				}
 			}
-			html.out.write(" href=\"");
+			document.out.write(" href=\"");
 			if(
 				isOpenFileAllowed
 				&& resourceFile != null
@@ -125,7 +125,7 @@ final public class FileImpl {
 			) {
 				encodeTextInXhtmlAttribute(
 					response.encodeURL(resourceFile.toURI().toASCIIString()),
-					html.out
+					document.out
 				);
 			} else {
 				final String urlPath;
@@ -148,37 +148,37 @@ final public class FileImpl {
 				}
 				encodeTextInXhtmlAttribute(
 					response.encodeURL(URIEncoder.encodeURI(urlPath)),
-					html.out
+					document.out
 				);
 			}
-			html.out.write('"');
+			document.out.write('"');
 			if(
 				isOpenFileAllowed
 				&& resourceFile != null
 				&& !isExporting
 			) {
-				html.out.write(" onclick=\"");
-				try (MediaWriter onclick = new MediaWriter(html.encodingContext, javaScriptInXhtmlAttributeEncoder, new NoCloseWriter(html.out))) {
+				document.out.write(" onclick=\"");
+				try (MediaWriter onclick = new MediaWriter(document.encodingContext, javaScriptInXhtmlAttributeEncoder, new NoCloseWriter(document.out))) {
 					onclick.append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;");
 				}
-				html.out.write('"');
+				document.out.write('"');
 			}
-			html.out.write('>');
+			document.out.write('>');
 			if(!hasBody) {
 				if(resourceFile == null) {
-					LinkImpl.writeBrokenPathInXhtml(pageRef, html.out);
+					LinkImpl.writeBrokenPathInXhtml(pageRef, document.out);
 				} else {
-					html.text(resourceFile.getName());
-					if(isDirectory) html.text(Path.SEPARATOR_CHAR);
+					document.text(resourceFile.getName());
+					if(isDirectory) document.text(Path.SEPARATOR_CHAR);
 				}
 			} else {
-				body.writeTo(new NodeBodyWriter(element, html.out, new ServletElementContext(servletContext, request, response)));
+				body.writeTo(new NodeBodyWriter(element, document.out, new ServletElementContext(servletContext, request, response)));
 			}
-			html.out.write("</a>");
+			document.out.write("</a>");
 			if(!hasBody && resourceFile != null && !isDirectory) {
-				html.out.write(" (");
-				html.text(Strings.getApproximateSize(resourceFile.length()));
-				html.out.write(')');
+				document.out.write(" (");
+				document.text(Strings.getApproximateSize(resourceFile.length()));
+				document.out.write(')');
 			}
 		}
 	}

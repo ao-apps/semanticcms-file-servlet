@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,7 @@
 package com.semanticcms.file.servlet;
 
 import com.aoindustries.encoding.taglib.EncodingBufferedTag;
-import com.aoindustries.html.servlet.HtmlEE;
+import com.aoindustries.html.servlet.DocumentEE;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.io.buffer.BufferWriter;
 import com.aoindustries.lang.Strings;
@@ -193,11 +193,10 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			capturedOut = null;
 		}
 		try {
-			FileImpl.writeFileImpl(
-				servletContext,
+			FileImpl.writeFileImpl(servletContext,
 				request,
 				response,
-				(capturedOut == null) ? null : HtmlEE.get(servletContext, request, response, capturedOut),
+				(capturedOut == null) ? null : DocumentEE.get(servletContext, request, response, capturedOut),
 				element
 			);
 		} finally {
