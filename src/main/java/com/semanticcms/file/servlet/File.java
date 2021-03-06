@@ -193,7 +193,8 @@ public class File extends Element<com.semanticcms.file.model.File> {
 			capturedOut = null;
 		}
 		try {
-			FileImpl.writeFileImpl(servletContext,
+			FileImpl.writeFileImpl(
+				servletContext,
 				request,
 				response,
 				(capturedOut == null) ? null : DocumentEE.get(servletContext, request, response, capturedOut),
