@@ -260,7 +260,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
 				servletContext,
 				request,
 				response,
-				(capturedOut == null) ? null : DocumentEE.get(servletContext, request, response, capturedOut),
+				(capturedOut == null) ? null : new DocumentEE(servletContext, request, response, capturedOut),
 				element
 			);
 		} finally {
