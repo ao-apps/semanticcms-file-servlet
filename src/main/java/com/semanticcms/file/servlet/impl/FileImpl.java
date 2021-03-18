@@ -23,7 +23,6 @@
 package com.semanticcms.file.servlet.impl;
 
 import com.aoindustries.html.any.AnyA;
-import com.aoindustries.html.any.AnyDocument;
 import com.aoindustries.html.any.AnyUnion_Palpable_Phrasing;
 import com.aoindustries.io.buffer.BufferResult;
 import com.aoindustries.lang.Strings;
@@ -60,14 +59,11 @@ final public class FileImpl {
 	/**
 	 * @param content Optional, when null meta data is verified but no output is generated
 	 */
-	public static <
-		D extends AnyDocument<D>,
-		__ extends AnyUnion_Palpable_Phrasing<D, __>
-	> void writeFileImpl(
+	public static void writeFileImpl(
 		ServletContext servletContext,
 		HttpServletRequest request,
 		HttpServletResponse response,
-		__ content,
+		AnyUnion_Palpable_Phrasing<?, ?> content,
 		com.semanticcms.file.model.File element
 	) throws ServletException, IOException, SkipPageException {
 		PageRef pageRef = element.getPageRef();
@@ -102,7 +98,7 @@ final public class FileImpl {
 			final boolean isExporting = Headers.isExporting(request);
 
 			String elemId = element.getId();
-			AnyA<D, __, ?, ?> a = content.a();
+			AnyA<?, ? extends AnyUnion_Palpable_Phrasing<?, ?>, ?, ?> a = content.a();
 			if(elemId != null) {
 				// TODO: To appendIdInPage, review other uses, too
 				a.id(PageIndex.getRefIdInPage(request, element.getPage(), elemId));
