@@ -36,8 +36,8 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		title="@{documented.name} Changelog"
 		shortTitle="Changelog"
 		tocLevels="1"
-		datePublished="2016-10-30T23:43:30-0500"
-		dateModified="2021-03-19T00:14:24-05:00"
+		datePublished="2016-10-30T23:43:30-05:00"
+		dateModified="2021-05-22T13:07:02-05:00"
 	>
 		<c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
 			<changelog:release
@@ -51,6 +51,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 					<li>Added <core:link book="/core/model" page="/" /> domain support.</li>
 					<li>Added <core:link book="/core/pages" page="/" /> support.</li>
 					<li>Added <core:link book="/core/resources" page="/" /> support.</li>
+					<li>Updated to <ao:a rel="nofollow" href="https://www.oracle.com/java/technologies/javaee/javaeetechnologies.html#javaee7">Java™ EE 7 Web Profile</ao:a> (Servlet 3.1, JSP 2.3, EL 3.0, and JSTL 1.2).</li>
 				</ul>
 			</changelog:release>
 		</c:if>
@@ -115,7 +116,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.7.0"
-			datePublished="2019-10-11T23:52:38-0500"
+			datePublished="2019-10-11T23:52:38-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -128,7 +129,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.6.1"
-			datePublished="2019-06-22T05:15:38-0500"
+			datePublished="2019-06-22T05:15:38-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -146,7 +147,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.6.0"
-			datePublished="2019-04-21T02:30:29-0500"
+			datePublished="2019-04-21T02:30:29-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -160,7 +161,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.5.3"
-			datePublished="2017-07-20T13:26:40-0500"
+			datePublished="2017-07-20T13:26:40-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -175,7 +176,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.5.2"
-			datePublished="2016-11-16T06:29:50-0600"
+			datePublished="2016-11-16T06:29:50-06:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -190,7 +191,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.5.1"
-			datePublished="2016-10-20T19:25:00-0500"
+			datePublished="2016-10-20T19:25:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -206,7 +207,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.5.0"
-			datePublished="2016-10-04T22:22:00-0500"
+			datePublished="2016-10-04T22:22:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -227,7 +228,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.4"
-			datePublished="2016-09-11T16:31:00-0500"
+			datePublished="2016-09-11T16:31:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -240,7 +241,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.3"
-			datePublished="2016-09-03T10:25:00-0500"
+			datePublished="2016-09-03T10:25:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -253,7 +254,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.2"
-			datePublished="2016-08-28T20:49:00-0500"
+			datePublished="2016-08-28T20:49:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -266,7 +267,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.1"
-			datePublished="2016-08-21T18:15:00-0500"
+			datePublished="2016-08-21T18:15:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
@@ -283,7 +284,7 @@ along with semanticcms-file-servlet.  If not, see <http://www.gnu.org/licenses /
 		<changelog:release
 			projectName="@{documented.name}"
 			version="1.0"
-			datePublished="2016-08-19T15:15:00-0500"
+			datePublished="2016-08-19T15:15:00-05:00"
 			groupId="@{project.groupId}"
 			artifactId="@{documented.artifactId}"
 			scmUrl="@{project.scm.url}"
