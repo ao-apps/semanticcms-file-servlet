@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
-final public class FileImpl {
+public final class FileImpl {
 
 	/**
 	 * @param  <Ex>  An arbitrary exception type that may be thrown
