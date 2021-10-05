@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [SemanticCMS](https://github.com/aoindustries/semanticcms) / [File](https://github.com/aoindustries/semanticcms-file) / [Servlet](https://github.com/aoindustries/semanticcms-file-servlet)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/ao-apps) [SemanticCMS](https://github.com/ao-apps/semanticcms) / [File](https://github.com/ao-apps/semanticcms-file) / [Servlet](https://github.com/ao-apps/semanticcms-file-servlet)
 
 [![project: current stable](https://semanticcms.com/ao-badges/project-current-stable.svg)](https://aoindustries.com/life-cycle#project-current-stable)
 [![management: production](https://semanticcms.com/ao-badges/management-production.svg)](https://aoindustries.com/life-cycle#management-production)
@@ -8,7 +8,7 @@
 [![semantic versioning: 2.0.0](https://semanticcms.com/ao-badges/semver-2.0.0.svg)](http://semver.org/spec/v2.0.0.html)
 [![license: LGPL v3](https://semanticcms.com/ao-badges/license-lgpl-3.0.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-[![Build](https://github.com/aoindustries/semanticcms-file-servlet/workflows/Build/badge.svg?branch=master)](https://github.com/aoindustries/semanticcms-file-servlet/actions?query=workflow%3ABuild)
+[![Build](https://github.com/ao-apps/semanticcms-file-servlet/workflows/Build/badge.svg?branch=master)](https://github.com/ao-apps/semanticcms-file-servlet/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.semanticcms/semanticcms-file-servlet/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.semanticcms/semanticcms-file-servlet)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.semanticcms%3Asemanticcms-file-servlet&metric=alert_status)](https://sonarcloud.io/dashboard?branch=master&id=com.semanticcms%3Asemanticcms-file-servlet)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.semanticcms%3Asemanticcms-file-servlet&metric=ncloc)](https://sonarcloud.io/component_measures?branch=master&id=com.semanticcms%3Asemanticcms-file-servlet&metric=ncloc)  
@@ -17,14 +17,14 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.semanticcms%3Asemanticcms-file-servlet&metric=sqale_rating)](https://sonarcloud.io/component_measures?branch=master&id=com.semanticcms%3Asemanticcms-file-servlet&metric=Maintainability)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?branch=master&project=com.semanticcms%3Asemanticcms-file-servlet&metric=coverage)](https://sonarcloud.io/component_measures?branch=master&id=com.semanticcms%3Asemanticcms-file-servlet&metric=Coverage)
 
-Files nested within [SemanticCMS](https://github.com/aoindustries/semanticcms) pages and elements in a Servlet environment.
+Files nested within [SemanticCMS](https://github.com/ao-apps/semanticcms) pages and elements in a Servlet environment.
 
 ## Project Links
 * [Project Home](https://semanticcms.com/file/servlet/)
 * [Changelog](https://semanticcms.com/file/servlet/changelog)
 * [API Docs](https://semanticcms.com/file/servlet/apidocs/)
 * [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-file-servlet)
-* [GitHub](https://github.com/aoindustries/semanticcms-file-servlet)
+* [GitHub](https://github.com/ao-apps/semanticcms-file-servlet)
 
 ## Contact Us
 For questions or support, please [contact us](https://aoindustries.com/contact):
