@@ -45,7 +45,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
-public final class FileImpl {
+public abstract class FileImpl {
+
+	/** Make no instances. */
+	private FileImpl() {throw new AssertionError();}
 
 	/**
 	 * @param  <Ex>  An arbitrary exception type that may be thrown
@@ -162,11 +165,5 @@ public final class FileImpl {
 				content.text(" (").text(Strings.getApproximateSize(resourceFile.length())).text(')');
 			}
 		}
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private FileImpl() {
 	}
 }
