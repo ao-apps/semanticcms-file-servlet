@@ -39,6 +39,7 @@ import com.semanticcms.core.servlet.impl.LinkImpl;
 import com.semanticcms.file.servlet.FileUtils;
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -154,7 +155,9 @@ public final class FileImpl {
 						if(isDirectory) a__.text(Path.SEPARATOR_CHAR);
 					}
 				} else {
-					body.writeTo(new NodeBodyWriter(element, a__.getUnsafe(), new ServletElementContext(servletContext, request, response)));
+					@SuppressWarnings("deprecation")
+					Writer unsafe = a__.getRawUnsafe();
+					body.writeTo(new NodeBodyWriter(element, unsafe, new ServletElementContext(servletContext, request, response)));
 				}
 			});
 			if(
