@@ -68,7 +68,7 @@ public final class FileImpl {
 		HttpServletResponse response,
 		AnyUnion_Palpable_Phrasing<?, ?> content,
 		com.semanticcms.file.model.File element
-	) throws ServletException, IOException, SkipPageException {
+	) throws ServletException, IOException {
 		PageRef pageRef = element.getPageRef();
 		// Find the local file, assuming relative to CVSWORK directory
 		File resourceFile = pageRef.getResourceFile(false, true);
