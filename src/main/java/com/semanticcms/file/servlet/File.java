@@ -44,171 +44,175 @@ import javax.servlet.jsp.SkipPageException;
 
 public class File extends Element<com.semanticcms.file.model.File> {
 
-	private final String path;
+  private final String path;
 
-	private String book;
+  private String book;
 
-	public File(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		com.semanticcms.file.model.File element,
-		String path
-	) {
-		super(
-			servletContext,
-			request,
-			response,
-			element
-		);
-		this.path = Strings.nullIfEmpty(path);
-	}
+  public File(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    com.semanticcms.file.model.File element,
+    String path
+  ) {
+    super(
+      servletContext,
+      request,
+      response,
+      element
+    );
+    this.path = Strings.nullIfEmpty(path);
+  }
 
-	public File(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		String path
-	) {
-		this(
-			servletContext,
-			request,
-			response,
-			new com.semanticcms.file.model.File(),
-			path
-		);
-	}
+  public File(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    String path
+  ) {
+    this(
+      servletContext,
+      request,
+      response,
+      new com.semanticcms.file.model.File(),
+      path
+    );
+  }
 
-	public File(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		com.semanticcms.file.model.File element,
-		String book,
-		String path
-	) {
-		this(servletContext, request, response, element, path);
-		this.book = Strings.nullIfEmpty(book);
-	}
+  public File(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    com.semanticcms.file.model.File element,
+    String book,
+    String path
+  ) {
+    this(servletContext, request, response, element, path);
+    this.book = Strings.nullIfEmpty(book);
+  }
 
-	public File(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		String book,
-		String path
-	) {
-		this(servletContext, request, response, path);
-		this.book = Strings.nullIfEmpty(book);
-	}
+  public File(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    String book,
+    String path
+  ) {
+    this(servletContext, request, response, path);
+    this.book = Strings.nullIfEmpty(book);
+  }
 
-	/**
-	 * Creates a new file in the current page context.
-	 *
-	 * @see  PageContext
-	 */
-	public File(
-		com.semanticcms.file.model.File element,
-		String path
-	) {
-		this(
-			PageContext.getServletContext(),
-			PageContext.getRequest(),
-			PageContext.getResponse(),
-			element,
-			path
-		);
-	}
+  /**
+   * Creates a new file in the current page context.
+   *
+   * @see  PageContext
+   */
+  public File(
+    com.semanticcms.file.model.File element,
+    String path
+  ) {
+    this(
+      PageContext.getServletContext(),
+      PageContext.getRequest(),
+      PageContext.getResponse(),
+      element,
+      path
+    );
+  }
 
-	/**
-	 * Creates a new file in the current page context.
-	 *
-	 * @see  PageContext
-	 */
-	public File(String path) {
-		this(
-			PageContext.getServletContext(),
-			PageContext.getRequest(),
-			PageContext.getResponse(),
-			path
-		);
-	}
+  /**
+   * Creates a new file in the current page context.
+   *
+   * @see  PageContext
+   */
+  public File(String path) {
+    this(
+      PageContext.getServletContext(),
+      PageContext.getRequest(),
+      PageContext.getResponse(),
+      path
+    );
+  }
 
-	/**
-	 * Creates a new file in the current page context.
-	 *
-	 * @see  PageContext
-	 */
-	public File(
-		com.semanticcms.file.model.File element,
-		String book,
-		String path
-	) {
-		this(element, path);
-		this.book = Strings.nullIfEmpty(book);
-	}
+  /**
+   * Creates a new file in the current page context.
+   *
+   * @see  PageContext
+   */
+  public File(
+    com.semanticcms.file.model.File element,
+    String book,
+    String path
+  ) {
+    this(element, path);
+    this.book = Strings.nullIfEmpty(book);
+  }
 
-	/**
-	 * Creates a new file in the current page context.
-	 *
-	 * @see  PageContext
-	 */
-	public File(String book, String path) {
-		this(path);
-		this.book = Strings.nullIfEmpty(book);
-	}
+  /**
+   * Creates a new file in the current page context.
+   *
+   * @see  PageContext
+   */
+  public File(String book, String path) {
+    this(path);
+    this.book = Strings.nullIfEmpty(book);
+  }
 
-	@Override
-	public File id(String id) {
-		super.id(id);
-		return this;
-	}
+  @Override
+  public File id(String id) {
+    super.id(id);
+    return this;
+  }
 
-	public File book(String book) {
-		this.book = Strings.nullIfEmpty(book);
-		return this;
-	}
+  public File book(String book) {
+    this.book = Strings.nullIfEmpty(book);
+    return this;
+  }
 
-	public File hidden(boolean hidden) {
-		element.setHidden(hidden);
-		return this;
-	}
+  public File hidden(boolean hidden) {
+    element.setHidden(hidden);
+    return this;
+  }
 
-	private BufferResult writeMe;
-	@Override
-	protected void doBody(CaptureLevel captureLevel, Body<? super com.semanticcms.file.model.File> body) throws ServletException, IOException, SkipPageException {
-		// Resolve file now to catch problems earlier even in meta mode
-		element.setPageRef(
-			PageRefResolver.getPageRef(
-				servletContext,
-				request,
-				book,
-				path
-			)
-		);
-		super.doBody(captureLevel, body);
-		BufferWriter capturedOut;
-		if(captureLevel == CaptureLevel.BODY) {
-			capturedOut = EncodingBufferedTag.newBufferWriter(request);
-		} else {
-			capturedOut = null;
-		}
-		try {
-			FileImpl.writeFileImpl(
-				servletContext,
-				request,
-				response,
-				(capturedOut == null) ? null : new DocumentEE(servletContext, request, response, capturedOut),
-				element
-			);
-		} finally {
-			if(capturedOut != null) capturedOut.close();
-		}
-		writeMe = capturedOut==null ? null : capturedOut.getResult();
-	}
+  private BufferResult writeMe;
+  @Override
+  protected void doBody(CaptureLevel captureLevel, Body<? super com.semanticcms.file.model.File> body) throws ServletException, IOException, SkipPageException {
+    // Resolve file now to catch problems earlier even in meta mode
+    element.setPageRef(
+      PageRefResolver.getPageRef(
+        servletContext,
+        request,
+        book,
+        path
+      )
+    );
+    super.doBody(captureLevel, body);
+    BufferWriter capturedOut;
+    if (captureLevel == CaptureLevel.BODY) {
+      capturedOut = EncodingBufferedTag.newBufferWriter(request);
+    } else {
+      capturedOut = null;
+    }
+    try {
+      FileImpl.writeFileImpl(
+        servletContext,
+        request,
+        response,
+        (capturedOut == null) ? null : new DocumentEE(servletContext, request, response, capturedOut),
+        element
+      );
+    } finally {
+      if (capturedOut != null) {
+        capturedOut.close();
+      }
+    }
+    writeMe = capturedOut == null ? null : capturedOut.getResult();
+  }
 
-	@Override
-	public void writeTo(Writer out, ElementContext context) throws IOException {
-		if(writeMe != null) writeMe.writeTo(out);
-	}
+  @Override
+  public void writeTo(Writer out, ElementContext context) throws IOException {
+    if (writeMe != null) {
+      writeMe.writeTo(out);
+    }
+  }
 }
