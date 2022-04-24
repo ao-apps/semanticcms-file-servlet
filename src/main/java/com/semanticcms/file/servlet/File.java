@@ -54,79 +54,79 @@ public class File extends Element<com.semanticcms.file.model.File> {
   private Path book;
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    com.semanticcms.file.model.File element,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      com.semanticcms.file.model.File element,
+      String path
   ) {
     super(
-      servletContext,
-      request,
-      response,
-      element
+        servletContext,
+        request,
+        response,
+        element
     );
     this.path = Strings.nullIfEmpty(path);
   }
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      String path
   ) {
     this(
-      servletContext,
-      request,
-      response,
-      new com.semanticcms.file.model.File(),
-      path
+        servletContext,
+        request,
+        response,
+        new com.semanticcms.file.model.File(),
+        path
     );
   }
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    com.semanticcms.file.model.File element,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      com.semanticcms.file.model.File element,
+      Path book,
+      String path
   ) {
     this(servletContext, request, response, element, path);
     this.book = book;
   }
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Path book,
+      String path
   ) {
     this(servletContext, request, response, path);
     this.book = book;
   }
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    com.semanticcms.file.model.File element,
-    DomainName domain,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      com.semanticcms.file.model.File element,
+      DomainName domain,
+      Path book,
+      String path
   ) {
     this(servletContext, request, response, element, book, path);
     this.domain = domain;
   }
 
   public File(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    DomainName domain,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      DomainName domain,
+      Path book,
+      String path
   ) {
     this(servletContext, request, response, book, path);
     this.domain = domain;
@@ -138,15 +138,15 @@ public class File extends Element<com.semanticcms.file.model.File> {
    * @see  PageContext
    */
   public File(
-    com.semanticcms.file.model.File element,
-    String path
+      com.semanticcms.file.model.File element,
+      String path
   ) {
     this(
-      PageContext.getServletContext(),
-      PageContext.getRequest(),
-      PageContext.getResponse(),
-      element,
-      path
+        PageContext.getServletContext(),
+        PageContext.getRequest(),
+        PageContext.getResponse(),
+        element,
+        path
     );
   }
 
@@ -157,10 +157,10 @@ public class File extends Element<com.semanticcms.file.model.File> {
    */
   public File(String path) {
     this(
-      PageContext.getServletContext(),
-      PageContext.getRequest(),
-      PageContext.getResponse(),
-      path
+        PageContext.getServletContext(),
+        PageContext.getRequest(),
+        PageContext.getResponse(),
+        path
     );
   }
 
@@ -170,9 +170,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
    * @see  PageContext
    */
   public File(
-    com.semanticcms.file.model.File element,
-    Path book,
-    String path
+      com.semanticcms.file.model.File element,
+      Path book,
+      String path
   ) {
     this(element, path);
     this.book = book;
@@ -194,10 +194,10 @@ public class File extends Element<com.semanticcms.file.model.File> {
    * @see  PageContext
    */
   public File(
-    com.semanticcms.file.model.File element,
-    DomainName domain,
-    Path book,
-    String path
+      com.semanticcms.file.model.File element,
+      DomainName domain,
+      Path book,
+      String path
   ) {
     this(element, book, path);
     this.domain = domain;
@@ -235,19 +235,20 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   private BufferResult writeMe;
+
   @Override
   protected void doBody(CaptureLevel captureLevel, Body<? super com.semanticcms.file.model.File> body) throws ServletException, IOException, SkipPageException {
     // Resolve file now to catch problems earlier even in meta mode
     ResourceRef resourceRef = ResourceRefResolver.getResourceRef(
-      servletContext,
-      request,
-      domain,
-      book,
-      path
+        servletContext,
+        request,
+        domain,
+        book,
+        path
     );
     element.setResource(
-      SemanticCMS.getInstance(servletContext).getBook(resourceRef.getBookRef()).getResources(),
-      resourceRef
+        SemanticCMS.getInstance(servletContext).getBook(resourceRef.getBookRef()).getResources(),
+        resourceRef
     );
     super.doBody(captureLevel, body);
     BufferWriter capturedOut;
@@ -258,11 +259,11 @@ public class File extends Element<com.semanticcms.file.model.File> {
     }
     try {
       FileHtmlRenderer.writeFileImpl(
-        servletContext,
-        request,
-        response,
-        (capturedOut == null) ? null : new DocumentEE(servletContext, request, response, capturedOut),
-        element
+          servletContext,
+          request,
+          response,
+          (capturedOut == null) ? null : new DocumentEE(servletContext, request, response, capturedOut),
+          element
       );
     } finally {
       if (capturedOut != null) {
