@@ -66,11 +66,11 @@ public final class FileImpl {
    * @param content Optional, when null meta data is verified but no output is generated
    */
   public static void writeFileImpl(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    AnyUnion_Palpable_Phrasing<?, ?> content,
-    com.semanticcms.file.model.File element
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AnyUnion_Palpable_Phrasing<?, ?> content,
+      com.semanticcms.file.model.File element
   ) throws ServletException, IOException {
     PageRef pageRef = element.getPageRef();
     // Find the local file, assuming relative to CVSWORK directory
@@ -85,14 +85,14 @@ public final class FileImpl {
       isDirectory = resourceFile.isDirectory();
       // When is a directory, must end in slash
       if (
-        isDirectory
-        && !pageRef.getPath().endsWith(Path.SEPARATOR_STRING)
+          isDirectory
+              && !pageRef.getPath().endsWith(Path.SEPARATOR_STRING)
       ) {
         throw new IllegalArgumentException(
-          "References to directories must end in slash ("
-          + Path.SEPARATOR_CHAR
-          + "): "
-          + pageRef
+            "References to directories must end in slash ("
+                + Path.SEPARATOR_CHAR
+                + "): "
+                + pageRef
         );
       }
     }
@@ -114,39 +114,39 @@ public final class FileImpl {
         a.clazz(SemanticCMS.getInstance(servletContext).getLinkCssClass(element));
       }
       if (
-        isOpenFileAllowed
-        && resourceFile != null
-        && !isExporting
+          isOpenFileAllowed
+              && resourceFile != null
+              && !isExporting
       ) {
         a.href(response.encodeURL(resourceFile.toURI().toASCIIString()));
       } else {
         final String urlPath;
         if (
-          resourceFile != null
-          && !isDirectory
-          // Check for header disabling auto last modified
-          && !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
+            resourceFile != null
+                && !isDirectory
+                // Check for header disabling auto last modified
+                && !"false".equalsIgnoreCase(request.getHeader(LastModifiedServlet.LAST_MODIFIED_HEADER_NAME))
         ) {
           // Include last modified on file
           urlPath = request.getContextPath()
-            + pageRef.getServletPath()
-            + "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
-            + "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
+              + pageRef.getServletPath()
+              + "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
+              + "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
           ;
         } else {
           urlPath = request.getContextPath()
-            + pageRef.getServletPath()
+              + pageRef.getServletPath()
           ;
         }
         a.href(response.encodeURL(URIEncoder.encodeURI(urlPath)));
       }
       if (
-        isOpenFileAllowed
-        && resourceFile != null
-        && !isExporting
+          isOpenFileAllowed
+              && resourceFile != null
+              && !isExporting
       ) {
         a.onclick(onclick -> onclick
-          .append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;")
+                .append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;")
         );
       }
       a.__(a__ -> {
@@ -166,9 +166,9 @@ public final class FileImpl {
         }
       });
       if (
-        !hasBody
-        && resourceFile != null
-        && !isDirectory
+          !hasBody
+              && resourceFile != null
+              && !isDirectory
       ) {
         content.text(" (").text(Strings.getApproximateSize(resourceFile.length())).text(')');
       }
