@@ -47,6 +47,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
+/**
+ * Writes the file element HTML.
+ */
 public final class FileImpl {
 
   /** Make no instances. */
@@ -55,6 +58,8 @@ public final class FileImpl {
   }
 
   /**
+   * The body content inside the file element HTML.
+   *
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @FunctionalInterface
@@ -63,6 +68,8 @@ public final class FileImpl {
   }
 
   /**
+   * Writes the file element HTML.
+   *
    * @param content Optional, when null meta data is verified but no output is generated
    */
   public static void writeFileImpl(
@@ -131,12 +138,10 @@ public final class FileImpl {
           urlPath = request.getContextPath()
               + pageRef.getServletPath()
               + "?" + LastModifiedServlet.LAST_MODIFIED_PARAMETER_NAME
-              + "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified())
-          ;
+              + "=" + LastModifiedServlet.encodeLastModified(resourceFile.lastModified());
         } else {
           urlPath = request.getContextPath()
-              + pageRef.getServletPath()
-          ;
+              + pageRef.getServletPath();
         }
         a.href(response.encodeURL(URIEncoder.encodeURI(urlPath)));
       }
@@ -146,7 +151,7 @@ public final class FileImpl {
               && !isExporting
       ) {
         a.onclick(onclick -> onclick
-                .append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;")
+            .append("semanticcms_openfile_servlet.openFile(").text(pageRef.getBook().getName()).append(", ").text(pageRef.getPath()).append("); return false;")
         );
       }
       a.__(a__ -> {

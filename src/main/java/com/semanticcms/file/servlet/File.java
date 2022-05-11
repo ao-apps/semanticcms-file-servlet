@@ -42,12 +42,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
 
+/**
+ * A file nested within SemanticCMS pages and elements in a Servlet environment.
+ */
 public class File extends Element<com.semanticcms.file.model.File> {
 
   private final String path;
 
   private String book;
 
+  /**
+   * Creates a new file.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
@@ -64,6 +70,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
     this.path = Strings.nullIfEmpty(path);
   }
 
+  /**
+   * Creates a new file.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
