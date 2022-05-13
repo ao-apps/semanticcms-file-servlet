@@ -40,4 +40,4 @@ module com.semanticcms.file.servlet {
   requires static com.semanticcms.openfile.servlet; // <groupId>com.semanticcms</groupId><artifactId>semanticcms-openfile-servlet</artifactId>
   // Java SE
   requires java.logging;
-} // TODO: Avoiding rewrite-maven-plugin-4.22.2 truncation
+}
