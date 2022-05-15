@@ -37,7 +37,7 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
     shortTitle="Changelog"
     tocLevels="1"
     datePublished="2016-10-30T23:43:30-05:00"
-    dateModified="2022-03-21T05:50:15-05:00"
+    dateModified="2022-05-15T03:13:08-05:00"
   >
     <c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
       <changelog:release
@@ -52,10 +52,22 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
           <li>Added <core:link book="/core/model" page="/" /> domain support.</li>
           <li>Added <core:link book="/core/pages" page="/" /> support.</li>
           <li>Added <core:link book="/core/resources" page="/" /> support.</li>
-          <li>Updated dependencies.</li>
         </ul>
       </changelog:release>
     </c:if>
+
+    <changelog:release
+      projectName="@{documented.name}"
+      version="1.10.1"
+      datePublished="2022-05-15T03:13:08-05:00"
+      groupId="@{project.groupId}"
+      artifactId="@{documented.artifactId}"
+      scmUrl="@{project.scm.url}"
+    >
+      <ul>
+        <li>Updated dependencies.</li>
+      </ul>
+    </changelog:release>
 
     <changelog:release
       projectName="@{documented.name}"
