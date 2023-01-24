@@ -398,7 +398,7 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
       <!-- javaee-web-api-bom: <groupId>org.apache.taglibs</groupId><artifactId>taglibs-standard-spec</artifactId> -->
       <!-- Runtime Transitive -->
       <dependency>
-        <groupId>org.webjars.npm</groupId><artifactId>jquery</artifactId><version>3.6.2</version>
+        <groupId>org.webjars.npm</groupId><artifactId>jquery</artifactId><version>3.6.3</version>
       </dependency>
       <!-- javaee-web-api-bom: <groupId>org.apache.taglibs</groupId><artifactId>taglibs-standard-impl</artifactId> -->
       <!-- BOM -->
