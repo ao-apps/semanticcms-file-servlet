@@ -117,6 +117,10 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
       <plugin>
         <groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId>
         <configuration>
+          <usedDependencies>
+            <!-- Used through reflection only -->
+            <dependency>com.semanticcms:semanticcms-openfile-servlet</dependency>
+          </usedDependencies>
           <ignoredDependencies>
             <!-- No "module-info.java" in some release builds -->
             <dependency>com.aoapps:ao-collections</dependency>
@@ -452,7 +456,6 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
       <groupId>com.semanticcms</groupId><artifactId>semanticcms-file-model</artifactId>
     </dependency>
     <dependency>
-      <!-- mvn dependency:analyze will report this as unused, it is actually used through reflection -->
       <groupId>com.semanticcms</groupId><artifactId>semanticcms-openfile-servlet</artifactId>
       <optional>true</optional>
     </dependency>
