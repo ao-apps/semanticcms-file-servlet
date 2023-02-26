@@ -23,7 +23,7 @@ Files nested within [SemanticCMS](https://github.com/ao-apps/semanticcms) pages 
 * [Project Home](https://semanticcms.com/file/servlet/)
 * [Changelog](https://semanticcms.com/file/servlet/changelog)
 * [API Docs](https://semanticcms.com/file/servlet/apidocs/)
-* [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-file-servlet)
+* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.semanticcms&q=a%3Asemanticcms-file-servlet)
 * [GitHub](https://github.com/ao-apps/semanticcms-file-servlet)
 
 ## Contact Us
