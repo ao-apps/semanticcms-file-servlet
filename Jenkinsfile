@@ -40,6 +40,7 @@ def upstreamProjects = [
   '../core/model', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-model</artifactId>
   '../core/pages', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-pages</artifactId>
   '../core/pages-local', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-pages-local</artifactId>
+  '../core/resources', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-resources</artifactId>
   '../core/servlet', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId>
   'model', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-file-model</artifactId>
   'renderer-html', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-file-renderer-html</artifactId>
