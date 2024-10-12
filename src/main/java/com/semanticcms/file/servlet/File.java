@@ -1,6 +1,6 @@
 /*
  * semanticcms-file-servlet - Files nested within SemanticCMS pages and elements in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -57,7 +57,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   private Path book;
 
   /**
-   * Creates a new file.
+   * Creates a new {@link File}.
    */
   public File(
       ServletContext servletContext,
@@ -76,7 +76,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file.
+   * Creates a new {@link File}.
    */
   public File(
       ServletContext servletContext,
@@ -93,6 +93,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
     );
   }
 
+  /**
+   * Creates a new {@link File}.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
@@ -105,6 +108,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
     this.book = book;
   }
 
+  /**
+   * Creates a new {@link File}.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
@@ -116,6 +122,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
     this.book = book;
   }
 
+  /**
+   * Creates a new {@link File}.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
@@ -129,6 +138,9 @@ public class File extends Element<com.semanticcms.file.model.File> {
     this.domain = domain;
   }
 
+  /**
+   * Creates a new {@link File}.
+   */
   public File(
       ServletContext servletContext,
       HttpServletRequest request,
@@ -142,7 +154,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -160,7 +172,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -174,7 +186,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -188,7 +200,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -198,7 +210,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -213,7 +225,7 @@ public class File extends Element<com.semanticcms.file.model.File> {
   }
 
   /**
-   * Creates a new file in the current page context.
+   * Creates a new {@link File} in the current page context.
    *
    * @see  PageContext
    */
@@ -228,16 +240,31 @@ public class File extends Element<com.semanticcms.file.model.File> {
     return this;
   }
 
+  /**
+   * Sets the domain.
+   *
+   * @return {@code this}
+   */
   public File domain(DomainName domain) {
     this.domain = domain;
     return this;
   }
 
+  /**
+   * Sets the book.
+   *
+   * @return {@code this}
+   */
   public File book(Path book) {
     this.book = book;
     return this;
   }
 
+  /**
+   * See {@link com.semanticcms.file.model.File#setHidden(boolean)}.
+   *
+   * @return {@code this}
+   */
   public File hidden(boolean hidden) {
     element.setHidden(hidden);
     return this;
