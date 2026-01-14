@@ -120,10 +120,6 @@ along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/
             <!-- Used through reflection only -->
             <dependency>com.semanticcms:semanticcms-openfile-servlet</dependency>
           </usedDependencies>
-          <ignoredDependencies>
-            <!-- No "module-info.java" in some release builds -->
-            <dependency>com.aoapps:ao-collections</dependency>
-          </ignoredDependencies>
         </configuration>
       </plugin>
       <plugin>
