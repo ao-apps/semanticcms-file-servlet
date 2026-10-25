@@ -21,8 +21,6 @@
  * along with semanticcms-file-servlet.  If not, see <https://www.gnu.org/licenses/>.
  */
 module com.semanticcms.file.servlet {
-  exports com.semanticcms.file.servlet;
-  exports com.semanticcms.file.servlet.impl;
   // Direct
   requires com.aoapps.encoding; // <groupId>com.aoapps</groupId><artifactId>ao-encoding</artifactId>
   requires com.aoapps.encoding.taglib; // <groupId>com.aoapps</groupId><artifactId>ao-encoding-taglib</artifactId>
@@ -40,4 +38,7 @@ module com.semanticcms.file.servlet {
   requires static com.semanticcms.openfile.servlet; // <groupId>com.semanticcms</groupId><artifactId>semanticcms-openfile-servlet</artifactId>
   // Java SE
   requires java.logging;
+
+  exports com.semanticcms.file.servlet;
+  exports com.semanticcms.file.servlet.impl;
 }
